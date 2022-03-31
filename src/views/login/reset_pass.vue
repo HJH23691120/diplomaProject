@@ -23,7 +23,7 @@
       </el-form-item>
       <el-form-item label="请确认密码" prop="confirmPassword">
         <el-input
-          v-model="form.confirmPassword"
+          v-model="confirmPassword"
           type="password"
           placeholder="请输入密码"
           clearable
@@ -60,9 +60,9 @@ export default {
       },
       form: {
         userId: '',
-        userPwd: '',
-        confirmPassword: ''
-      }
+        userPwd: ''
+      },
+      confirmPassword: ''
     };
   },
   created() {},
@@ -92,9 +92,8 @@ export default {
         API.updatePwd({
           ...this.form
         })
-        // 更新密码接口
+          // 更新密码接口
           .then(res => {
-            console.log(res);
             if (res.code === -1) {
               this.$message.error('密码输入有误');
             }

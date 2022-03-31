@@ -30,9 +30,9 @@
         <el-input v-model="form.useName" placeholder="请输入用户名" clearable>
         </el-input>
       </el-form-item>
-      <el-form-item label="新密码" prop="userPwd">
+      <el-form-item label="新密码" prop="newPwd">
         <el-input
-          v-model="form.userPwd"
+          v-model="form.newPwd"
           type="password"
           placeholder="请输入密码"
           clearable
@@ -41,7 +41,7 @@
       </el-form-item>
       <el-form-item label="请确认密码" prop="confirmPassword">
         <el-input
-          v-model="form.confirmPassword"
+          v-model="confirmPassword"
           type="password"
           placeholder="请输入密码"
           clearable
@@ -107,14 +107,14 @@ export default {
       },
       form: {
         userId: '',
-        userPwd: '',
+        newPwd: '',
         useName: '',
-        confirmPassword: '',
         userGender: '',
         userClass: '',
         userRole: '',
         userTel: ''
-      }
+      },
+      confirmPassword:''
     };
   },
   created() {
@@ -127,7 +127,7 @@ export default {
         return;
       }
 
-      if (value !== this.form.userPwd) {
+      if (value !== this.form.newPwd) {
         callback('两次输入的密码必须一致');
         return;
       }
