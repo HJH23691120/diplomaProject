@@ -10,7 +10,7 @@
         size="normal"
       >
         <el-form-item prop="userId" label="用户名：">
-          <el-input v-model="form.userId" placeholder="请输入用户名" clearable>
+          <el-input v-model="form.userId" placeholder="请输入用户ID" clearable>
           </el-input>
         </el-form-item>
         <el-form-item prop="userPwd" label="密码：">

@@ -8,13 +8,13 @@
       :inline="false"
       size="normal"
     >
-      <el-form-item prop="useName" label="用户名：">
-        <el-input v-model="form.useName" placeholder="请输入用户名" clearable>
+      <el-form-item prop="userId" label="用户名：">
+        <el-input v-model="form.userId" placeholder="请输入用户名" clearable>
         </el-input>
       </el-form-item>
-      <el-form-item label="新密码" prop="password">
+      <el-form-item label="新密码" prop="userPwd">
         <el-input
-          v-model="form.password"
+          v-model="form.userPwd"
           type="password"
           placeholder="请输入密码"
           clearable
@@ -59,8 +59,8 @@ export default {
         ],
       },
       form: {
-        useName: '',
-        password: '',
+        userId: '',
+        userPwd: '',
         confirmPassword: '',
       },
     };
@@ -73,8 +73,7 @@ export default {
         callback('请输入密码');
         return;
       }
-
-      if (value !== this.form.password) {
+      if (value !== this.form.userPwd) {
         callback('两次输入的密码必须一致');
         return;
       }
@@ -90,11 +89,16 @@ export default {
           return;
         }
         this.isLoading = true;
-        API.login({
+        API.updatePwd({
           ...this.form,
         })
           .then(res => {
             console.log(res);
+            if(res.code === -1){
+              this.$message.error('密码输入有误')
+            }
+            this.$message.success('修改成功，即将返回登陆页面');
+            this.goBack()
           })
           .finally(() => {
             this.isLoading = false;
