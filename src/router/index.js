@@ -5,21 +5,21 @@ Vue.use(Router);
 
 export const routeMaps = [
   {
-    path: '/',
-    name: '/',
+    path: '/home',
+    name: 'home',
     component: Layout,
     redirect: '/homePage',
     hidden: false,
     meta: {
-      title: '首页',
+      title: '首页'
     },
     children: [
       {
         path: '/homePage',
         name: 'homePage',
-        component: () => import('@views/home_page/index.vue'),
+        component: () => import('@views/home_page/index.vue')
       },
-    ],
+    ]
   },
   {
     path: '/check',
@@ -28,15 +28,15 @@ export const routeMaps = [
     component: Layout,
     hidden: false,
     meta: {
-      title: '审核',
+      title: '审核'
     },
     children: [
       {
         path: '/checkPage',
         name: 'checkPage',
-        component: () => import('@views/check_page/index.vue'),
+        component: () => import('@views/check_page/index.vue')
       },
-    ],
+    ]
   },
   {
     path: '/login',
@@ -44,22 +44,25 @@ export const routeMaps = [
     component: () => import('@views/login/index.vue'),
     hidden: true,
     meta: {
-      title: '登录',
-    },
+      title: '登录'
+    }
   },
 ];
 const router = new Router({
   // mode: 'history',
   // scrollBehavior: () => ({ y: 0 }),
-  routes: routeMaps, // 抛出路由数组
+  routes: routeMaps // 抛出路由数组
 });
 // router.beforeEach((to, from, next) => {
-//   const isLogin = sessionStorage.getItem('userInfo');
-//   console.log(isLogin);
-//   if (!isLogin) {
-//     next('/login');
-//   } else {
-//     next('/logins');
+//   const isLogin = sessionStorage.getItem('useID');
+//   console.log(to.path);
+//   if (to.path !== '/login') {
+//     if (!isLogin) {
+//       next('/login');
+//     } else {
+//       next();
+//     }
 //   }
+//   next()
 // });
 export default router;

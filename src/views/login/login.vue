@@ -9,13 +9,13 @@
         :inline="false"
         size="normal"
       >
-        <el-form-item prop="account" label="用户名：">
-          <el-input v-model="form.account" placeholder="请输入用户名" clearable>
+        <el-form-item prop="userId" label="用户名：">
+          <el-input v-model="form.userId" placeholder="请输入用户名" clearable>
           </el-input>
         </el-form-item>
-        <el-form-item prop="password" label="密码：">
+        <el-form-item prop="userPwd" label="密码：">
           <el-input
-            v-model="form.password"
+            v-model="form.userPwd"
             placeholder="请输入密码"
             type="password"
             clearable
@@ -53,10 +53,10 @@ export default {
     return {
       rules,
       form: {
-        account: '',
-        password: '',
+        userId: '',
+        userPwd: ''
       },
-      isLoading: false,
+      isLoading: false
     };
   },
   methods: {
@@ -67,10 +67,17 @@ export default {
         }
         this.isLoading = true;
         API.login({
-          ...this.form,
+          ...this.form
         })
           .then(res => {
-            console.log(res);
+            if (res.code === -1) {
+              this.$message('用户名或者密码有误，请重新输入');
+              return;
+            }
+            const userID = res.data.userId;
+            sessionStorage.setItem('useID', userID);
+            this.$message.success('登陆成功，即将为您跳转首页')
+            this.$router.push('/homePage')
           })
           .finally(() => {
             this.isLoading = false;
@@ -79,13 +86,13 @@ export default {
     },
     forgetPass() {
       this.$refs.form.clearValidate();
-      this.$emit('handleResetPass')
+      this.$emit('handleResetPass');
     },
     goRegister() {
       this.$refs.form.clearValidate();
-       this.$emit('handleRegister')
-    },
-  },
+      this.$emit('handleRegister');
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

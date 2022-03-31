@@ -7,7 +7,8 @@ const rules = {
     { required: true, message: '用户性别不能为空', trigger: 'change' },
   ],
   useName: [{ required: true, message: '账号不能为空', trigger: 'change' },],
-  password: [{ required: true, message: '密码不能为空', trigger: 'change' },],
+  userId: [{ required: true, message: '账号不能为空', trigger: 'change' },],
+  userPwd: [{ required: true, message: '密码不能为空', trigger: 'change' },],
   confirmPassword: [
     { required: true, message: '密码不能为空', trigger: 'change' },
   ],
