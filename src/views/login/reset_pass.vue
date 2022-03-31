@@ -32,7 +32,9 @@
       </el-form-item>
       <div class="button-box">
         <el-button @click="goBack">返回</el-button>
-        <el-button type="primary" @click="confirm">确认</el-button>
+        <el-button type="primary" @click="confirm" :loading="isLoading"
+          >确认</el-button
+        >
       </div>
     </el-form>
   </div>
@@ -43,26 +45,24 @@ import { rules } from './until';
 import API from '@apis/login/index.js';
 export default {
   name: 'resetPass',
-  components: {},
-  computed: {},
-  watch: {},
   data() {
     return {
+      isLoading: false,
       myRules: {
         ...rules,
         confirmPassword: [
           {
             required: true,
             validator: this.checkPass.bind(this),
-            trigger: 'change',
+            trigger: 'change'
           },
-        ],
+        ]
       },
       form: {
         userId: '',
         userPwd: '',
-        confirmPassword: '',
-      },
+        confirmPassword: ''
+      }
     };
   },
   created() {},
@@ -90,22 +90,23 @@ export default {
         }
         this.isLoading = true;
         API.updatePwd({
-          ...this.form,
+          ...this.form
         })
+        // 更新密码接口
           .then(res => {
             console.log(res);
-            if(res.code === -1){
-              this.$message.error('密码输入有误')
+            if (res.code === -1) {
+              this.$message.error('密码输入有误');
             }
             this.$message.success('修改成功，即将返回登陆页面');
-            this.goBack()
+            this.goBack();
           })
           .finally(() => {
             this.isLoading = false;
           });
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>

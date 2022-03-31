@@ -30,9 +30,9 @@
         <el-input v-model="form.useName" placeholder="请输入用户名" clearable>
         </el-input>
       </el-form-item>
-      <el-form-item label="新密码" prop="password">
+      <el-form-item label="新密码" prop="userPwd">
         <el-input
-          v-model="form.password"
+          v-model="form.userPwd"
           type="password"
           placeholder="请输入密码"
           clearable
@@ -57,7 +57,7 @@
         >
         </el-input>
       </el-form-item>
-      <el-form-item label="用户电话" prop="useTel">
+      <el-form-item label="用户电话">
         <el-input
           v-model="form.useTel"
           type="password"
@@ -68,22 +68,23 @@
       </el-form-item>
       <div class="button-box">
         <el-button @click="goBack">返回</el-button>
-        <el-button type="primary" @click="confirm">确认</el-button>
+        <el-button type="primary" @click="confirm" :loading="isLoading"
+          >确认</el-button
+        >
       </div>
     </el-form>
   </div>
 </template>
 
 <script>
+import API from '@apis/login/index.js';
 import { rules, useRoleList, useGenderList } from './until';
 const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
 export default {
   name: 'register',
-  components: {},
-  computed: {},
-  watch: {},
   data() {
     return {
+      isLoading: false,
       useRoleList,
       useGenderList,
       myRules: {
@@ -92,23 +93,32 @@ export default {
           {
             required: true,
             validator: this.checkPass.bind(this),
-            trigger: 'change',
+            trigger: 'change'
           },
         ],
         useTel: [
+          // 验证手机号
           {
             required: true,
             validator: this.checkTel.bind(this),
-            trigger: 'blur',
+            trigger: 'blur'
           },
-        ],
+        ]
       },
       form: {
+        userId: '',
+        userPwd: '',
         useName: '',
-        password: '',
         confirmPassword: '',
-      },
+        userGender: '',
+        userClass: '',
+        userRole: '',
+        userTel: ''
+      }
     };
+  },
+  created() {
+    this.getUserId();
   },
   methods: {
     checkPass(rule, value, callback) {
@@ -117,45 +127,70 @@ export default {
         return;
       }
 
-      if (value !== this.form.password) {
+      if (value !== this.form.userPwd) {
         callback('两次输入的密码必须一致');
         return;
       }
       callback();
     },
     checkTel(rule, value, callback) {
-      if (!value) {
-        callback('请输入手机号');
-        return;
-      }
-      if (!reg.test(value)) {
+      if (value && !reg.test(value)) {
         callback('手机号不合法，请重新输入');
         return;
       }
       callback();
     },
+    getUserId() {
+      API.getUserId().then(res => {
+        if (res.code === -1) {
+          this.$message.error(
+            '多次申请新的用户Id失败，请联系管理员删除存量数据'
+          );
+          return;
+        }
+        this.form.userId = res.data;
+      });
+    },
     goBack() {
+      // 返回登录
       this.$refs.form.clearValidate();
       this.$emit('handleBackLogin');
     },
     confirm() {
+      // 确认提交
       this.$refs.form.validate(valid => {
         if (!valid) {
           return;
         }
         this.isLoading = true;
+        const param = {
+          creatBy: 'admin',
+          updateBy: 'admin'
+        };
         API.login({
           ...this.form,
+          ...param
         })
           .then(res => {
-            console.log(res);
+            if (res.code === -1) {
+              this.$message.error('添加用户失败');
+              return;
+            }
+            this.$confirm('用户ID作为登录凭证，请牢记')
+            // 请求接口，弹窗提示
+              .then(() => {
+                this.goBack();
+              })
+              .catch(error => {
+                console.log(error);
+              });
           })
           .finally(() => {
             this.isLoading = false;
           });
       });
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="scss" scoped>
