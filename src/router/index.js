@@ -39,6 +39,40 @@ export const routeMaps = [
     ]
   },
   {
+    path: '/list',
+    name: 'list',
+    redirect: '/userList',
+    component: Layout,
+    hidden: false,
+    meta: {
+      title: '用户列表'
+    },
+    children: [
+      {
+        path: '/userList',
+        name: 'userList',
+        component: () => import('@views/user_list/index.vue')
+      },
+    ]
+  },
+  {
+    path: '/center',
+    name: 'center',
+    redirect: '/personalCenter',
+    component: Layout,
+    hidden: true,
+    meta: {
+      title: '个人中心'
+    },
+    children: [
+      {
+        path: '/personalCenter',
+        name: 'personalCenter',
+        component: () => import('@views/personal_center/index.vue')
+      },
+    ]
+  },
+  {
     path: '/login',
     name: 'Login',
     component: () => import('@views/login/index.vue'),

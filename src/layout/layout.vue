@@ -6,6 +6,10 @@
           学生实习管理系统
         </div>
         <div>
+          <el-button type="text" size="default" @click="showCenter"
+            >个人中心</el-button
+          >
+
           <el-button
             class="logout-btn"
             type="text"
@@ -62,7 +66,6 @@ export default {
     };
   },
   created() {
-    console.log(routeMaps);
     if (this.$route.name === 'homepage') {
       this.selectedIndex = '/';
     } else {
@@ -77,6 +80,11 @@ export default {
       } catch (error) {
         console.log('error');
       }
+    },
+    showCenter() {
+      if (this.$route.path !== '/personalCenter') {
+        this.$router.push('/personalCenter');
+      }
     }
   }
 };
@@ -87,7 +95,7 @@ export default {
   width: 100%;
   box-sizing: border-box;
   background-color: #eff1f5;
-  .el-container{
+  .el-container {
     height: 100%;
   }
   .el-header {

@@ -1,5 +1,11 @@
 <template>
   <div class="container">
+    <header class="header">
+      个人中心
+      <el-button type="text" size="default" @click="changeEdit" v-if="isEdit"
+        >修改</el-button
+      >
+    </header>
     <el-form
       :model="form"
       ref="form"
@@ -7,9 +13,12 @@
       label-width="120px"
       :inline="false"
       size="normal"
+      hide-required-asterisk
+      :disabled="isEdit"
+      :loading="isLoading"
     >
-      <el-form-item label="用户角色" size="normal" prop="useRole">
-        <el-radio-group v-model="form.useRole">
+      <el-form-item label="用户角色" size="normal">
+        <el-radio-group v-model="form.useRole" :disabled="true">
           <el-radio
             v-for="item in useRoleList"
             :key="item.key"
@@ -66,25 +75,24 @@
         >
         </el-input>
       </el-form-item>
-      <div class="button-box">
-        <el-button @click="goBack">返回</el-button>
-        <el-button type="primary" @click="confirm" :loading="isLoading"
-          >确认</el-button
-        >
+      <div class="button-box" v-if="!isEdit">
+        <el-button @click="cancel">取消</el-button>
+        <el-button type="primary" @click="confirm">确认</el-button>
       </div>
     </el-form>
   </div>
 </template>
 
 <script>
-import API from '@apis/login/index.js';
-import { rules, useRoleList, useGenderList } from './until';
-const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
+import { rules, useRoleList, useGenderList } from './../login/until';
+import API from '@apis/userlist/index.js';
 export default {
-  name: 'register',
+  name: 'personalCenter',
+
   data() {
     return {
       isLoading: false,
+      isEdit: true,
       useRoleList,
       useGenderList,
       myRules: {
@@ -97,7 +105,6 @@ export default {
           },
         ],
         useTel: [
-          // 验证手机号
           {
             required: true,
             validator: this.checkTel.bind(this),
@@ -117,10 +124,19 @@ export default {
       confirmPassword: ''
     };
   },
-  created() {
-    this.getUserId();
-  },
+  created() {},
+  mounted() {},
   methods: {
+    init() {
+      const tempUserID = sessionStorage.getItem('userId');
+      API.getUser({ userId: tempUserID }).then(res => {
+        if (res.code === -1) {
+          this.$message('未查询到用户信息');
+          return;
+        }
+        this.form = res.data;
+      });
+    },
     checkPass(rule, value, callback) {
       if (!value) {
         callback('请输入密码');
@@ -140,51 +156,27 @@ export default {
       }
       callback();
     },
-    getUserId() {
-      API.getUserId().then(res => {
-        if (res.code === -1) {
-          this.$message.error(
-            '多次申请新的用户Id失败，请联系管理员删除存量数据'
-          );
-          return;
-        }
-        this.form.userId = res.data;
-      });
+    changeEdit() {
+      this.isEdit = false;
     },
-    goBack() {
-      // 返回登录
-      this.$refs.form.clearValidate();
-      this.$emit('handleBackLogin');
+    cancel() {
+      this.isEdit = true;
     },
     confirm() {
-      // 确认提交
       this.$refs.form.validate(valid => {
         if (!valid) {
           return;
         }
         this.isLoading = true;
-        const param = {
-          creatBy: 'admin',
-          updateBy: 'admin'
-        };
-        API.login({
-          ...this.form,
-          ...param
+        API.updateUser({
+          ...this.form
         })
           .then(res => {
             if (res.code === -1) {
-              this.$message.error('添加用户失败');
+              this.$message('修改用户失败');
               return;
             }
-            sessionStorage.setItem('userInfo', userID);
-            this.$confirm('用户ID作为登录凭证，请牢记')
-              // 请求接口，弹窗提示
-              .then(() => {
-                this.goBack();
-              })
-              .catch(error => {
-                console.log(error);
-              });
+            this.isEdit = true;
           })
           .finally(() => {
             this.isLoading = false;
@@ -196,22 +188,26 @@ export default {
 </script>
 <style lang="scss" scoped>
 .container {
-  padding: 10px 20px;
-  .button-box {
-    margin-top: 40px;
-    display: flex;
-    justify-content: space-between;
-    .el-button {
-      width: 200px;
+  .el-form {
+    width: 800px;
+    .el-input {
+      width: 380px;
     }
   }
-  .el-radio-group {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    .el-radio {
-      margin: 10px;
+  .button-box {
+    margin-top: 40px;
+    .el-button {
+      width: 243px;
+    }
+  }
+  .header {
+    margin: 15px 0 15px 0;
+    width: 500px;
+    line-height: 40px;
+    font-weight: 700;
+    font-size: 25px;
+    .el-button {
+      float: right;
     }
   }
 }

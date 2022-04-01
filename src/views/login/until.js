@@ -9,31 +9,32 @@ const rules = {
   useName: [{ required: true, message: '账号不能为空', trigger: 'change' },],
   userId: [{ required: true, message: '账号不能为空', trigger: 'change' },],
   userPwd: [{ required: true, message: '密码不能为空', trigger: 'change' },],
+  newPwd: [{ required: true, message: '密码不能为空', trigger: 'change' },],
   confirmPassword: [
     { required: true, message: '密码不能为空', trigger: 'change' },
-  ],
+  ]
 };
 const useRoleList = [
   {
     label: '学生',
-    key: 'student',
+    key: '4'
   },
   {
     label: '校内导师',
-    key: 'schoolT',
+    key: '3'
   },
   {
     label: '企业导师',
-    key: 'firmT',
+    key: '2'
   },
   {
     label: '管理员',
-    key: 'admin',
+    key: '1'
   },
 ];
 const useGenderList = ['男', '女',];
 module.exports = {
   rules,
   useRoleList,
-  useGenderList,
+  useGenderList
 };
