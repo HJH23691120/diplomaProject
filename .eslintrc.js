@@ -16,7 +16,7 @@ module.exports = {
     quotes: [2, "single", "avoid-escape"],
     "comma-dangle": [2, "always"], //对象字面量项尾不能有逗号
     "comma-dangle": ["error", {
-      "arrays": "always",
+      "arrays": "only-multiline",
       "objects": "only-multiline",
       "imports": "never",
       "exports": "always",

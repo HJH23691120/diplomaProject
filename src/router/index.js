@@ -28,7 +28,8 @@ export const routeMaps = [
     component: Layout,
     hidden: false,
     meta: {
-      title: '审核'
+      title: '学生管理',
+      limits:['2','3']
     },
     children: [
       {
@@ -45,7 +46,8 @@ export const routeMaps = [
     component: Layout,
     hidden: false,
     meta: {
-      title: '用户列表'
+      title: '用户管理',
+      limits:['1']
     },
     children: [
       {
