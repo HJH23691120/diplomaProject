@@ -43,7 +43,7 @@
           <el-radio
             v-for="item in options"
             :key="item.value"
-            :label="item.label"
+            :label="item.value"
           >
             {{ item.label }}
           </el-radio>

@@ -13,7 +13,7 @@
           <el-radio
             v-for="item in useRoleList"
             :key="item.key"
-            :label="item.label"
+            :label="item.key"
           >
             {{ item.label }}
           </el-radio>
@@ -30,9 +30,9 @@
         <el-input v-model="form.useName" placeholder="请输入用户名" clearable>
         </el-input>
       </el-form-item>
-      <el-form-item label="新密码" prop="newPwd">
+      <el-form-item label="新密码" prop="userPwd">
         <el-input
-          v-model="form.newPwd"
+          v-model="form.userPwd"
           type="password"
           placeholder="请输入密码"
           clearable
@@ -48,7 +48,11 @@
         >
         </el-input>
       </el-form-item>
-      <el-form-item label="用户班级" prop="useClass">
+      <el-form-item
+        label="用户班级"
+        v-if="['3', '4'].includes(form.useRole)"
+        prop="useClass"
+      >
         <el-input
           v-model="form.useClass"
           type="password"
@@ -94,7 +98,7 @@ export default {
             required: true,
             validator: this.checkPass.bind(this),
             trigger: 'change'
-          },
+          }
         ],
         useTel: [
           // 验证手机号
@@ -102,12 +106,12 @@ export default {
             required: true,
             validator: this.checkTel.bind(this),
             trigger: 'blur'
-          },
+          }
         ]
       },
       form: {
         userId: '',
-        newPwd: '',
+        userPwd: '',
         useName: '',
         userGender: '',
         userClass: '',
@@ -127,7 +131,7 @@ export default {
         return;
       }
 
-      if (value !== this.form.newPwd) {
+      if (value !== this.form.userPwd) {
         callback('两次输入的密码必须一致');
         return;
       }

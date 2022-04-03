@@ -24,7 +24,7 @@
             <el-radio
               v-for="item in options"
               :key="item.key"
-              :label="item.label"
+              :label="item.key"
             >
               {{ item.label }}
             </el-radio>
@@ -35,7 +35,7 @@
             <el-radio
               v-for="item in options"
               :key="item.key"
-              :label="item.label"
+              :label="item.key"
             >
               {{ item.label }}
             </el-radio>

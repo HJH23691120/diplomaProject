@@ -11,8 +11,16 @@ const getUserList = function(data) {
   // 获取用户信息
   return axios.post('/getUserList', data);
 };
+const addUser = function(data) {
+  return axios.post('/addUser', data);
+};
+const delUser = function(data) {
+  return axios.post('/delUser', data);
+};
 export default {
   getUser,
   updateUser,
-  getUserList
+  getUserList,
+  addUser,
+  delUser
 };

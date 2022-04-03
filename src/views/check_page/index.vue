@@ -107,6 +107,9 @@ export default {
          userInfo: row
         }
       });
+    },
+    getTableData(){
+
     }
   }
 };

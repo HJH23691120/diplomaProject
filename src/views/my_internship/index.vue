@@ -87,7 +87,7 @@
         <div class="tips">已审核过的实习申请不允许修改</div>
         <el-button
           type="primary"
-          :disabled="form.weekReportAudit"
+          :disabled="form.agreeApply"
           size="default"
           @click="update"
           >修改申请</el-button
