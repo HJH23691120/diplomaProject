@@ -37,6 +37,30 @@ export const routeMaps = [
         name: 'checkPage',
         component: () => import('@views/check_page/index.vue')
       },
+      {
+        path: '/studentEvaluate', // 学生评价
+        name: 'studentEvaluate',
+        component: () => import('@views/check_page/child_page/student_evaluate.vue'),
+        meta: { hidden: false, title: '学生评价' },
+      },
+      {
+        path: '/traineeEvaluate',// 实习评价
+        name: 'traineeEvaluate',
+        component: () => import('@views/check_page/child_page/trainee_evaluate.vue'),
+        meta: { hidden: false, title: '实习评价' },
+      },
+      {
+        path: '/trainee',// 实习申请
+        name: 'trainee',
+        component: () => import('@views/check_page/child_page/trainee.vue'),
+        meta: { hidden: false, title: '实习申请' },
+      },
+      {
+        path: '/weekReport',
+        name: 'weekReport',
+        component: () => import('@views/check_page/child_page/weeK_report.vue'),
+        meta: { hidden: false, title: '周记审核' },
+      },
     ]
   },
   {

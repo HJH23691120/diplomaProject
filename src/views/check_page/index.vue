@@ -22,7 +22,7 @@
         align="center"
       >
       </el-table-column>
-      <el-table-column min-width="150" align="center">
+      <el-table-column min-width="220" label="操作" align="center">
         <template v-slot="scoped">
           <div>
             <el-button
@@ -40,6 +40,12 @@
             <el-button
               type="text"
               size="default"
+              @click="studentEvaluate(scoped.row)"
+              >学生评价</el-button
+            >
+            <el-button
+              type="text"
+              size="default"
               @click="checkEvaluate(scoped.row)"
               >实习评价</el-button
             >
@@ -51,27 +57,56 @@
 </template>
 
 <script>
+import API from '@apis/userlist/index';
 export default {
   name: 'checKPage',
-  components: {},
-  computed: {},
-  watch: {},
+  computed: {
+    userRole() {
+      const tempInfo = JSON.parse(sessionStorage.getItem('userInfo') || '{}');
+      return tempInfo;
+    }
+  },
   data() {
     return {
-      tableData: []
+      tableData: [{}]
     };
   },
-  created() {},
-  mounted() {},
   methods: {
     checkWeeklyReport(row) {
-      console.log(row);
+      // 周记管理
+      this.$router.push({
+        path: '/weekReport',
+        query: {
+         userInfo: row
+        }
+      });
     },
     checkTrainee(row) {
-      console.log(row);
+     // 实习申请
+       this.$router.push({
+        path: '/trainee',
+        query: {
+         userInfo: row
+        }
+      });
     },
     checkEvaluate(row) {
-      console.log(row);
+      //  实习评价
+       this.$router.push({
+        path: '/traineeEvaluate',
+        query: {
+         userInfo: row
+        }
+      });
+    },
+    studentEvaluate(row) {
+      // 学生评价
+       this.$router.push({
+        path: '/studentEvaluate',
+        query: {
+         userInfo: row
+        }
+      });
     }
   }
 };

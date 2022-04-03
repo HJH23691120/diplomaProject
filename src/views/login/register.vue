@@ -167,7 +167,7 @@ export default {
           creatBy: 'admin',
           updateBy: 'admin'
         };
-        API.login({
+        API.addUser({
           ...this.form,
           ...param
         })

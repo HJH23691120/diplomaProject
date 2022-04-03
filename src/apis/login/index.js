@@ -5,11 +5,15 @@ const login = function(data) {
 const updatePwd = function(data) {
   return axios.post('/updatePwd', data);
 };
+const addUser = function(data) {
+  return axios.post('/addUser', data);
+};
 const getUserId = function(data) {
   return axios.post('/getUserId', data);
 };
 export default {
   login,
   updatePwd,
-  getUserId
+  getUserId,
+  addUser
 };
