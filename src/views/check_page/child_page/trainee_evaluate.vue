@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <!-- 学生评价 -->
-    <BreadCrumb></BreadCrumb>
     <section class="section">
       <el-form
         :model="form"
@@ -62,14 +61,10 @@
 </template>
 
 <script>
-import BreadCrumb from '@components/bread_crumb.vue';
 import API from '@apis/student_mange/index';
 const sessionInfo = JSON.parse(sessionStorage.getItem('userInfo') || '{}');
 export default {
   name: 'studentEvaluate',
-  components: {
-    BreadCrumb
-  },
   data() {
     return {
       remark: '',

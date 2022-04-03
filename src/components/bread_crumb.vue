@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <section class="section">
+      <div v-if="!$route.meta.hiddenBack">
         <el-button
           type="text"
           size="default"
@@ -9,6 +10,7 @@
           >返回</el-button
         >
         <span style="margin: 0 14px 0 20px">|</span>
+      </div>
       <span class="title">{{ $route.meta.title }}</span>
     </section>
   </div>
@@ -29,11 +31,18 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    .el-button {
-      font-size: 20px;
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .el-button {
+        font-size: 20px;
+      }
     }
+
     .title {
-      font-size: 16px;
+      font-size: 22px;
+      font-weight: 600;
     }
   }
 }

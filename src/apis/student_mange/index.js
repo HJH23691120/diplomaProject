@@ -4,19 +4,19 @@ const updateWeek = function(data) {
   return axios.post('/updateWeek', data);
 };
 const getWeek = function(data) {
-  // 更新用户信息
+  // 获取周记
   return axios.post('/getWeek', data);
 };
 const getPracticeApply = function(data) {
-  // 获取用户信息
+  // 查询实习申请
   return axios.post('/getPracticeApply', data);
 };
 const applyPractice = function(data) {
-  // 获取用户信息
+  // 提交实习申请
   return axios.post('/applyPractice', data);
 };
 const getWeekNum = function(data) {
-  // 获取用户信息
+  // 获取周记条数
   return axios.post('/getWeekNum', data);
 };
 const addEvaluate = function(data) {
@@ -31,6 +31,14 @@ const getEvaluate = function(data) {
   // 获取实习评价
   return axios.post('/getEvaluate', data);
 };
+const addWeek = function(data) {
+  // 添加周记
+  return axios.post('/addWeek', data);
+};
+const updatePracticeApply = function(data) {
+  // 添加周记
+  return axios.post('/updatePracticeApply', data);
+};
 export default {
   updateWeek,
   getWeek,
@@ -39,5 +47,7 @@ export default {
   getWeekNum,
   addEvaluate,
   updateEvaluate,
-  getEvaluate
+  getEvaluate,
+  addWeek,
+  updatePracticeApply
 };

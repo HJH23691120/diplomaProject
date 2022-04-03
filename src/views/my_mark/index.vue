@@ -1,11 +1,9 @@
 <template>
   <div class="container">
-    <!-- 学生评价 -->
     <section class="section">
       <el-form
         :model="form"
         ref="form"
-        :rules="rules"
         label-width="120px"
         :inline="false"
         size="normal"
@@ -54,6 +52,7 @@
           <el-input
             :value="form.teacherResult"
             placeholder="请输入成绩"
+            disabled
           ></el-input>
         </el-form-item>
         <el-form-item label="学生评价" prop="teacherAppraise">
@@ -61,17 +60,11 @@
             :value="form.teacherAppraise"
             type="textarea"
             :rows="10"
+            disabled
             placeholder="请输入评价"
           ></el-input>
         </el-form-item>
       </el-form>
-
-      <div class="button-box">
-        <el-button size="default" @click="cancel">取消</el-button>
-        <el-button type="primary" size="default" @click="confirm"
-          >提交评价</el-button
-        >
-      </div>
     </section>
   </div>
 </template>
@@ -80,7 +73,9 @@
 import API from '@apis/student_mange/index';
 const sessionInfo = JSON.parse(sessionStorage.getItem('userInfo') || '{}');
 export default {
-  name: 'studentEvaluate',
+  name: 'MyMark',
+  components: {
+  },
   data() {
     return {
       remark: '',
@@ -91,9 +86,8 @@ export default {
         attendQualified: '',
         workComplete: '',
         firmComment: '',
-        teacherResult:'',
-        teacherAppraise:''
-
+        teacherResult: '',
+        teacherAppraise: ''
       },
       options: [
         {
@@ -104,30 +98,18 @@ export default {
           key: '0',
           label: '否'
         }
-      ],
-      rules: {
-        teacherResult: [
-          { required: true, message: '成绩不能为空', trigger: 'change' }
-        ],
-        teacherAppraise: [
-          { required: true, message: '不能为空', trigger: 'change' }
-        ]
-      }
+      ]
     };
   },
   created() {
-    const tempInfo = this.$route.query.userInfo;
     const param = {
-      userId: tempInfo.userId
+      userId: sessionInfo.userId
     };
     this.loading = true;
-    Promise.all([API.getWeekNum(param), API.getEvaluate(param)])
+    API.getEvaluate(param)
       .then(res => {
-        const isAllReady = res.some(item => item.code === -1);
-        if (isAllReady) {
-          const msg =
-            '当前学生周记数未提交，或者企业导师尚未评价，请联系学生补交周记或提醒企业导师评价';
-          this.$confirm(msg)
+        if (res.code === -1) {
+          this.$confirm('暂时没有成绩')
             // 请求接口，弹窗提示
             .then(() => {
               this.goBack();
@@ -135,14 +117,9 @@ export default {
             .catch(error => {
               console.log(error);
             });
-        } else {
-          this.form = {
-            firmResult: res[1].data.firmResult,
-            attendQualified: res[1].data.attendQualified,
-            workComplete: res[1].data.workComplete,
-            firmComment: res[1].data.firmComment
-          };
+          return;
         }
+        this.form = res.data;
       })
       .finally(() => {
         this.loading = true;
@@ -151,37 +128,6 @@ export default {
   methods: {
     goBack() {
       this.$router.go(-1);
-    },
-    cancel() {
-      this.$refs.form.clearValidate();
-      this.goBack();
-    },
-    confirm() {
-      this.$refs.form.validate(valid => {
-        if (!valid) {
-          return;
-        }
-        const param = {
-          ...this.form,
-          userTableId: this.$route.query.userInfo.userId,
-          firmId: sessionInfo.userId,
-          creatBy: sessionInfo.userId,
-          updateBy: sessionInfo.userId
-        };
-        API.addEvaluate(param)
-          .then(res => {
-            if (res.code === -1) {
-              this.$message.error('评价失败');
-              return;
-            }
-            this.$message.success('提交成功');
-            this.form = res.data;
-            this.isDisabled = true;
-          })
-          .finally(() => {
-            this.loading = false;
-          });
-      });
     }
   }
 };

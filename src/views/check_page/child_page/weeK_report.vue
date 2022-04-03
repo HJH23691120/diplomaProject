@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <!-- 周记审核 -->
-    <BreadCrumb></BreadCrumb>
     <section class="section">
       <!-- 周记选择框-->
       <div class="select">
@@ -35,13 +34,11 @@
 </template>
 
 <script>
-import BreadCrumb from '@components/bread_crumb.vue';
 import Dialog from './../component/audit_dialog.vue';
 import API from '@apis/student_mange/index';
 export default {
   name: 'weekReport',
   components: {
-    BreadCrumb,
     Dialog
   },
   data() {

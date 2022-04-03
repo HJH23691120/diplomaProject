@@ -43,6 +43,7 @@
           </el-menu>
         </el-card>
         <el-main class="my-main">
+          <BreadCrumb class="bread-crumb"></BreadCrumb>
           <router-view :key="key"></router-view>
         </el-main>
       </el-container>
@@ -51,6 +52,7 @@
 </template>
 
 <script>
+import BreadCrumb from '@components/bread_crumb.vue';
 import { routeMaps } from './../router/index';
 export default {
   name: 'LayoutView',
@@ -58,6 +60,9 @@ export default {
     key() {
       return this.$route.path;
     }
+  },
+  components: {
+    BreadCrumb
   },
   data() {
     return {
@@ -135,6 +140,9 @@ export default {
       border-radius: 5px;
       margin: 82px 10px 0 270px;
       height: calc(100% - 82px);
+      .bread-crumb{
+        margin: 10px 0 30px 0;
+      }
     }
     a {
       text-decoration: none;

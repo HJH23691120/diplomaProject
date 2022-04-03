@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <BreadCrumb></BreadCrumb>
     <header class="header">{{ tableInfo.userName }}实习申请</header>
     <el-form
       :model="form"
@@ -59,13 +58,9 @@
 </template>
 
 <script>
-import BreadCrumb from '@components/bread_crumb.vue';
 import API from '@apis/student_mange/index';
 export default {
   name: 'trainee',
-  components: {
-    BreadCrumb
-  },
   computed: {
     tableInfo() {
       return this.$route.query.userInfo;
