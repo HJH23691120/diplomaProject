@@ -11,7 +11,7 @@
         >
         <span style="margin: 0 14px 0 20px">|</span>
       </div>
-      <span class="title">{{ $route.meta.title }}</span>
+      <span class="title" v-if="$route.meta.title">{{ $route.meta.title }}</span>
     </section>
   </div>
 </template>

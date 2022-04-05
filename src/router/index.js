@@ -20,7 +20,7 @@ export const routeMaps = [
         name: 'homePage',
         component: () => import('@views/home/index.vue'),
         meta: {
-          title: '首页',
+          title: '',
           hiddenBack: true
         }
       }
@@ -200,16 +200,16 @@ const router = new Router({
   // scrollBehavior: () => ({ y: 0 }),
   routes: routeMaps // 抛出路由数组
 });
-// router.beforeEach((to, from, next) => {
-//   const isLogin = sessionStorage.getItem('useID');
-//   console.log(to.path);
-//   if (to.path !== '/login') {
-//     if (!isLogin) {
-//       next('/login');
-//     } else {
-//       next();
-//     }
-//   }
-//   next()
-// });
+router.beforeEach((to, from, next) => {
+  const isLogin = sessionStorage.getItem('useID');
+  console.log(to.path);
+  if (to.path !== '/login') {
+    if (!isLogin) {
+      next('/login');
+    } else {
+      next();
+    }
+  }
+  next()
+});
 export default router;
