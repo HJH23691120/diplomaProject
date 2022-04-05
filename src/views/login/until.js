@@ -10,9 +10,6 @@ const rules = {
   userId: [{ required: true, message: '账号不能为空', trigger: 'change' }],
   userPwd: [{ required: true, message: '密码不能为空', trigger: 'change' }],
   newPwd: [{ required: true, message: '密码不能为空', trigger: 'change' }],
-  confirmPassword: [
-    { required: true, message: '密码不能为空', trigger: 'change' }
-  ]
 };
 const useRoleList = [
   {

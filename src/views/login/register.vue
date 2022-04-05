@@ -41,7 +41,7 @@
       </el-form-item>
       <el-form-item label="请确认密码" prop="confirmPassword">
         <el-input
-          v-model="confirmPassword"
+          v-model="form.confirmPassword"
           type="password"
           placeholder="请输入密码"
           clearable
@@ -168,13 +168,12 @@ export default {
         }
         this.isLoading = true;
         const param = {
+            ...this.form,
           creatBy: 'admin',
           updateBy: 'admin'
         };
-        API.addUser({
-          ...this.form,
-          ...param
-        })
+        delete param.confirmPassword
+        API.addUser(param)
           .then(res => {
             if (res.code === -1) {
               this.$message.error('添加用户失败');

@@ -5,6 +5,28 @@ Vue.use(Router);
 
 export const routeMaps = [
   {
+    path: '/home',
+    name: 'home',
+    redirect: '/homePage',
+    component: Layout,
+    hidden: true,
+    meta: {
+      title: '首页',
+      hiddenBack: true
+    },
+    children: [
+      {
+        path: '/homePage',
+        name: 'homePage',
+        component: () => import('@views/home/index.vue'),
+        meta: {
+          title: '首页',
+          hiddenBack: true
+        }
+      }
+    ]
+  },
+  {
     path: '/check',
     name: 'check',
     redirect: '/checkPage',
