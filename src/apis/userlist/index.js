@@ -17,6 +17,7 @@ const addUser = function(data) {
 const delUser = function(data) {
   return axios.post('/delUser', JSON.stringify(data));
 };
+
 export default {
   getUser,
   updateUser,

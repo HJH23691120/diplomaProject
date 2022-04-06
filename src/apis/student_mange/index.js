@@ -39,6 +39,9 @@ const updatePracticeApply = function(data) {
   // 添加周记
   return axios.post('/updatePracticeApply', JSON.stringify(data));
 };
+const getFirmTutro = function(data) {
+  return axios.post('/getFirmTutro', JSON.stringify(data));
+};
 export default {
   updateWeek,
   getWeek,
@@ -49,5 +52,6 @@ export default {
   updateEvaluate,
   getEvaluate,
   addWeek,
-  updatePracticeApply
+  updatePracticeApply,
+  getFirmTutro
 };

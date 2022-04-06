@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <el-table :data="tableData" border stripe>
+    <el-table :data="tableData" border stripe :loading="loading">
       <el-table-column
         prop="userName"
         label="用户名"
@@ -29,23 +29,27 @@
               type="text"
               size="default"
               @click="checkWeeklyReport(scoped.row)"
+              v-if="userInfo.userRole==='3' || userInfo.userRole==='1'"
               >周记审核</el-button
             >
             <el-button
               type="text"
               size="default"
               @click="checkTrainee(scoped.row)"
+              v-if="userInfo.userRole==='3' || userInfo.userRole==='1'"
               >实习申请</el-button
             >
             <el-button
               type="text"
               size="default"
               @click="studentEvaluate(scoped.row)"
+              v-if="userInfo.userRole==='3' || userInfo.userRole==='1'"
               >学生评价</el-button
             >
             <el-button
               type="text"
               size="default"
+              v-if="userInfo.userRole==='2' || userInfo.userRole==='1'"
               @click="checkEvaluate(scoped.row)"
               >实习评价</el-button
             >
@@ -68,8 +72,16 @@ export default {
   },
   data() {
     return {
-      tableData: [{}]
+      tableData: [],
+      loading:false,
+      pageNum:1,
+      pageSize:50,
+      userInfo:{}
     };
+  },
+  created(){
+    this.userInfo=JSON.parse(sessionStorage.getItem('userInfo')|| '{}')
+    this.getTableData()
   },
   methods: {
     checkWeeklyReport(row) {
@@ -109,7 +121,25 @@ export default {
       });
     },
     getTableData(){
-
+  const tempInfo=JSON.parse(sessionStorage.getItem('userInfo') || '{}')
+      const tempRole = tempInfo.userRole;
+      this.loading=true;
+      const param={
+        userClass : tempRole==='2'?'admin':['3','4'].includes(tempRole)?tempInfo.userClass:'',
+        userRole : tempRole === '1'?'':'4',
+       userId : tempRole==='2'?this.userInfo.userId:tempRole==='1'?'':'admin',
+        pageIndex : this.pageNum,
+        pageSize : this.pageSize,
+      }
+      API.getUserList(param).then(res=>{
+        if(res.code===-1){
+          this.$message.error('未查到用户信息');
+          return;
+        }
+        this.tableData=res.data.list;
+      }).finally(()=>{
+        this.loading=false;
+      })
     }
   }
 };

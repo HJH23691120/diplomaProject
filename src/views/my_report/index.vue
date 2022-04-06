@@ -23,6 +23,7 @@
           type="textarea"
           clearable
           minlength="300"
+          :disabled="form.weekReportAudit"
           :rows="10"
           show-word-limit
         ></el-input>
@@ -36,7 +37,7 @@
         </el-form-item>
         <el-form-item label="老师评价">
           <el-input
-            :value="form.practiceWeekReport"
+            :value="form.weekReportAudit"
             type="textarea"
             clearable
             :rows="10"
@@ -47,7 +48,7 @@
     </el-form>
     <div class="button-box">
       <div v-if="isHas">
-        <div class="tips">已审核过的周记不允许修改</div>
+        <div class="tips" v-if="form.weekReportAudit">已审核过的周记不允许修改</div>
         <el-button
           type="primary"
           :disabled="form.weekReportAudit"
@@ -68,20 +69,18 @@
 import API from '@apis/student_mange/index';
 export default {
   name: 'myReport',
-  components: {},
-  computed: {},
-  watch: {},
   data() {
     return {
       form: {
-        practiceWeek: 1
+        practiceWeek:1,
+        practiceWeekReport:'',
       },
       isHas: false,
       loading: false
     };
   },
   created() {
-    this.getWeeks('1');
+    this.getWeeks(String(1));
   },
   mounted() {},
   methods: {
@@ -92,16 +91,17 @@ export default {
     getWeeks(val) {
       this.loading = true;
       API.getWeek({
-        userId: sessionStorage.getItem('userID'),
+        userId: sessionStorage.getItem('userId'),
         practiceWeek: val
       })
         .then(res => {
-          if (res.code !== -1) {
+          if (res.code === -1) {
             this.$message.error(`第${val}周的周记为空，请添加`);
             this.isHas = false;
             return;
           }
-          this.form = res.data;
+          this.form = res.data || {};
+          this.form.practiceWeek=Number(res.data.practiceWeek || '1')
           this.isHas = true;
         })
         .finally(() => {
@@ -120,12 +120,13 @@ export default {
       this.loading = true;
       API.addWeek(param)
         .then(res => {
-          if (res.code !== -1) {
+          if (res.code === -1) {
             this.$message.error('新增周记失败');
             this.isHas = false;
             return;
           }
-          this.form = res.data;
+          this.form = res.data || {};
+          this.form.practiceWeek=Number(res.data.practiceWeek || '1')
         })
         .finally(() => {
           this.loading = false;
@@ -134,6 +135,7 @@ export default {
     updateWeek() {
       const id = sessionStorage.getItem('userId');
       const param = {
+        id:this.form.id,
         userTableId: id,
         practiceWeek: this.form.practiceWeek + '',
         creatBy: id,
@@ -148,7 +150,9 @@ export default {
             return;
           }
           this.$message.success('修改成功');
-          this.form = res.data;
+          this.form = res.data || {};
+          this.form.practiceWeek=Number(res.data.practiceWeek || '1')
+
         })
         .finally(() => {
           this.loading = false;

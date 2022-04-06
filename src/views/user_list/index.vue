@@ -24,7 +24,7 @@
         >新增用户</el-button
       >
     </div>
-    <el-table :data="tableData" border stripe max-height="850px">
+    <el-table :data="tableData" border stripe max-height="850px" :loading="loading">
       <el-table-column
         prop="userId"
         label="用户ID"
@@ -122,9 +122,10 @@
     </div>
     <Dialog
       :isVisible.sync="visible"
-      :data="rowData"
+      :editData="rowData"
       :isCreate="isCreate"
       :title="title"
+      @success="getTableData"
     />
   </div>
 </template>
@@ -148,13 +149,14 @@ export default {
       visible: false,
       rowData: {},
       title: '',
-      isCreate: false
+      isCreate: false,
+      loading: false
     };
   },
   created() {
     const tempInfo = sessionStorage.getItem('userInfo');
     this.userInfo = JSON.parse(tempInfo || '{}');
-    console.log(this.userInfo);
+    this.getTableData()
   },
   mounted() {},
   methods: {
@@ -167,9 +169,36 @@ export default {
       this.pageNum = value;
       this.getTableData();
     },
-    getTableData() {},
-    search() {},
-    reset() {},
+    getTableData() {
+      const tempRole = this.userInfo.userRole;
+      this.loading=true;
+      const param={
+        userClass : tempRole==='2'?'admin':['3','4'].includes(tempRole)?this.userInfo.userClass:'',
+        userRole : tempRole === '1'?'':'4',
+        userId : tempRole==='2'?this.userInfo.userId:tempRole==='1'?'':'admin',
+        pageIndex : this.pageNum,
+        pageSize : this.pageSize,
+      }
+      API.getUserList(param).then(res=>{
+        if(res.code===-1){
+          this.$message.error('未查到用户信息');
+          return;
+        }
+        this.tableData=res.data.list;
+        this.total=res.data.totalSize
+      }).finally(()=>{
+        this.loading=false;
+      })
+    },
+    search() {
+      this.pageNum=1;
+      this.getTableData()
+    },
+    reset() {
+      Object.keys(this.form).forEach(key=>this.form[key]='')
+       this.pageNum=1;
+      this.getTableData()
+    },
     addUser() {
       this.visible = true;
       this.isCreate = true;
@@ -178,7 +207,8 @@ export default {
     edit(row) {
       this.visible = true;
       this.isCreate = false;
-      this.title = '新增用户';
+      this.title = '修改用户';
+      console.log(row);
       this.rowData = row;
     },
     remove(row) {

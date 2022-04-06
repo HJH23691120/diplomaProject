@@ -78,7 +78,7 @@ export default {
             sessionStorage.setItem('userId', userID);
             sessionStorage.setItem('userInfo', JSON.stringify(res.data));
             this.$message.success('登陆成功，即将为您跳转首页')
-            this.$router.push('/homePage')
+            this.$router.push('/home')
           })
           .finally(() => {
             this.isLoading = false;

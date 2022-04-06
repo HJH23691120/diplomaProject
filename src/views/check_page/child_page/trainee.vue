@@ -81,7 +81,9 @@ export default {
       ]
     };
   },
-  created() {},
+  created() {
+    this.initData()
+  },
   methods: {
     initData() {
       const tempInfo = this.$route.query.userInfo;
@@ -89,7 +91,7 @@ export default {
         userId: tempInfo.userId
       };
       API.getPracticeApply(param).then(res => {
-        if (res.code !== -1) {
+        if (res.code === -1) {
           this.$message.error('未查询出实习申请');
           return;
         }
@@ -104,11 +106,12 @@ export default {
         ...this.form,
         updateBy: sessionStorage.getItem('userId')
       };
-      API.applyPractice(param).then(res => {
-        if (res.code !== -1) {
+      API.updatePracticeApply(param).then(res => {
+        if (res.code === -1) {
           this.$message.error('审核实习申请失败');
           return;
         }
+        this.$message.success('审核成功')
         this.form = res.data;
       });
     }

@@ -102,8 +102,24 @@ export default {
       }
     };
   },
-  mounted() {},
+  created(){
+    this.initData()
+  },
   methods: {
+    initData(){
+      API.getEvaluate({
+         userId: this.$route.query.userInfo.userId,
+      }) .then(res => {
+            if (res.code === -1) {
+              this.$message.error('查询失败');
+              return;
+            }
+            this.form = res.data || {};
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+    },
     goBack() {
       this.$router.go(-1);
     },

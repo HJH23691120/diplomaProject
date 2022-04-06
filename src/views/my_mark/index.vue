@@ -18,26 +18,10 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="考勤是否合格">
-          <el-radio-group v-model="form.attendQualified" disabled>
-            <el-radio
-              v-for="item in options"
-              :key="item.key"
-              :label="item.label"
-            >
-              {{ item.label }}
-            </el-radio>
-          </el-radio-group>
+          {{radioMap[form.attendQualified]}}
         </el-form-item>
         <el-form-item label="工作是否完成">
-          <el-radio-group v-model="form.workComplete" disabled>
-            <el-radio
-              v-for="item in options"
-              :key="item.key"
-              :label="item.label"
-            >
-              {{ item.label }}
-            </el-radio>
-          </el-radio-group>
+            {{radioMap[form.workComplete]}}
         </el-form-item>
         <el-form-item label="企业导师评语">
           <el-input
@@ -72,12 +56,17 @@
 <script>
 import API from '@apis/student_mange/index';
 const sessionInfo = JSON.parse(sessionStorage.getItem('userInfo') || '{}');
+const radioMap = {
+  '1':'是',
+  '0':'否'
+}
 export default {
   name: 'MyMark',
   components: {
   },
   data() {
     return {
+      radioMap,
       remark: '',
       isDisabled: false,
       loading: false,

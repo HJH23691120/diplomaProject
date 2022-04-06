@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+    <div class="button">
+    <el-button type="text" @click="changeEdit" v-if="form.agreeApply!=='1' &&form.id">
+      修改
+    </el-button>
+    </div>
     <el-form
       :model="form"
       ref="form"
@@ -8,6 +13,7 @@
       :inline="false"
       size="normal"
       :loading="loading"
+      :disabled="isDisabled"
     >
       <el-form-item label="单位名称" prop="unitName">
         <el-input
@@ -42,12 +48,21 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="企业导师" prop="firmTutor">
-        <el-input
-          v-model="form.firmTutor"
-          placeholder="请输入企业导师"
-          size="normal"
-          clearable
-        ></el-input>
+          <el-select
+            v-model="form.firmTutor"
+            filterable
+            remote
+            reserve-keyword
+            placeholder="请输入企业导师"
+            :remote-method="querySearch"
+            :loading="selectLoading">
+              <el-option
+                v-for="item in tutorList"
+                :key="item.user_id"
+                :label="item.user_name"
+                :value="item.user_name">
+              </el-option>
+              </el-select>
       </el-form-item>
       <el-form-item label="企业待遇" prop="practiceTreatment">
         <el-input
@@ -58,12 +73,11 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="实习时间" prop="practiceTime">
-        <el-input
+        <el-date-picker
           v-model="form.practiceTime"
-          placeholder="请输入实习时间"
-          size="normal"
-          clearable
-        ></el-input>
+          type="datetime"
+          placeholder="选择日期时间">
+        </el-date-picker>
       </el-form-item>
       <el-form-item label="实习地点" prop="practicePlace">
         <el-input
@@ -73,7 +87,7 @@
           clearable
         ></el-input>
       </el-form-item>
-      <el-form-item label="证明材料" prop="uploaadProve">
+      <el-form-item label="证明材料" >
         <el-upload
           action
           ref="upload"
@@ -86,13 +100,16 @@
           </el-button>
         </el-upload>
       </el-form-item>
+      <el-form-item label="审核结果" v-if="form.agreeApply">
+       {{form.agreeApply==='1'?'同意':'驳回'}}
+      </el-form-item>
     </el-form>
     <div class="button-box">
-      <div v-if="isEdit">
-        <div class="tips">已审核过的实习申请不允许修改</div>
+      <div v-if="form.id">
+        <div class="tips" v-if="form.agreeApply==='1'">已审核过的实习申请不允许修改</div>
         <el-button
-          type="primary"
-          :disabled="form.agreeApply"
+          type="primary"          
+          :disabled="form.agreeApply==='1'"
           size="default"
           @click="update"
           >修改申请</el-button
@@ -115,9 +132,9 @@ export default {
   watch: {},
   data() {
     return {
-      isEdit: false,
       loading: false,
       uploadLoading: false,
+      isDisabled: false,
       rules: {
         unitName: [
           { required: true, message: '账号不能为空', trigger: 'change' }
@@ -126,22 +143,22 @@ export default {
           { required: true, message: '账号不能为空', trigger: 'change' }
         ],
         firmContact: [
-          { required: true, message: '密码不能为空', trigger: 'change' }
+          { required: true, message: '不能为空', trigger: 'change' }
         ],
         firmTel: [
-          { required: true, message: '密码不能为空', trigger: 'change' }
+          { required: true, message: '不能为空', trigger: 'change' }
         ],
         firmTutor: [
-          { required: true, message: '密码不能为空', trigger: 'change' }
+          { required: true, message: '不能为空', trigger: 'blur' }
         ],
         practiceTreatment: [
-          { required: true, message: '密码不能为空', trigger: 'change' }
+          { required: true, message: '不能为空', trigger: 'change' }
         ],
         practiceTime: [
-          { required: true, message: '密码不能为空', trigger: 'change' }
+          { required: true, message: '不能为空', trigger: 'change' }
         ],
         practicePlace: [
-          { required: true, message: '密码不能为空', trigger: 'change' }
+          { required: true, message: '不能为空', trigger: 'change' }
         ],
         uploaadProve: [
           { required: true, message: '密码不能为空', trigger: 'change' }
@@ -157,10 +174,14 @@ export default {
         practiceTime: '',
         practicePlace: '',
         uploaadProve: ''
-      }
+      },
+      tutorList:[],
+      selectLoading:false
     };
   },
-  created() {},
+  created() {
+    this.initData()
+  },
   mounted() {},
   methods: {
     initData() {
@@ -168,19 +189,19 @@ export default {
         userId: sessionStorage.getItem('userId')
       }).then(res => {
         if (res.code === -1) {
-          this.isEdit = true;
+          this.$message.warning('未查出实习申请')
           return;
         }
         this.form = res.data;
-        this.isEdit = false;
+        this.isDisabled=true;
       });
     },
     update() {
       const param = {
         ...this.form,
-        userTableId: sessionStorage.getItem('userID'),
-        creatBy: sessionStorage.getItem('userID'),
-        updateBy: sessionStorage.getItem('userID')
+        userTableId: sessionStorage.getItem('userId'),
+        creatBy: sessionStorage.getItem('userId'),
+        updateBy: sessionStorage.getItem('userId')
       };
       API.updatePracticeApply(param).then(res => {
         if (res.code === -1) {
@@ -189,22 +210,24 @@ export default {
         }
         this.$message.success('修改成功');
         this.form = res.data;
+        this.isDisabled=true;
       });
     },
     confirm() {
       const param = {
         ...this.form,
-        userTableId: sessionStorage.getItem('userID'),
-        creatBy: sessionStorage.getItem('userID'),
-        updateBy: sessionStorage.getItem('userID')
+        userTableId: sessionStorage.getItem('userId'),
+        creatBy: sessionStorage.getItem('userId'),
+        updateBy: sessionStorage.getItem('userId')
       };
       API.applyPractice(param).then(res => {
         if (res.code === -1) {
-          this.$message.error('修改实习申请失败');
+          this.$message.error('提交实习申请失败');
           return;
         }
-        this.$message.success('修改成功');
+        this.$message.success('提交成功');
         this.form = res.data;
+        this.isDisabled=true;
       });
     },
     handleUpload(file) {
@@ -239,13 +262,35 @@ export default {
           });
       };
       reader.readAsArrayBuffer(file.raw);
+    },
+    querySearch(query){
+    console.log(query);
+    if(!query){
+      return;
+    }
+    this.selectLoading=true
+      API.getFirmTutro({
+        userName:query
+      }).then(res=>{
+        if(res.code===-1){
+          this.$message.error('未查询到企业导师');
+          return;
+        }
+       this.tutorList=res.data;
+      }).finally(()=>{
+        this.selectLoading=false
+      })
+
+    },
+    changeEdit(){
+      this.isDisabled=false
     }
   }
 };
 </script>
 <style lang="scss" scoped>
 .container {
-  .el-input {
+  .el-input,.el-select {
     width: 480px;
   }
   .button-box {
@@ -258,6 +303,15 @@ export default {
       margin: 10px 0;
       font-size: 10px;
       color: red;
+    }
+  }
+  .button{
+    // width: 500px;
+    // height: 50px;
+    // position: relative;
+    .el-button{
+      // position: absolute;
+      // right: 10px;
     }
   }
 }

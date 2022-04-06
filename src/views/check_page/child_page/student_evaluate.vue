@@ -52,13 +52,13 @@
         </el-form-item>
         <el-form-item label="学生成绩" prop="teacherResult">
           <el-input
-            :value="form.teacherResult"
+            v-model="form.teacherResult"
             placeholder="请输入成绩"
           ></el-input>
         </el-form-item>
         <el-form-item label="学生评价" prop="teacherAppraise">
           <el-input
-            :value="form.teacherAppraise"
+            v-model="form.teacherAppraise"
             type="textarea"
             :rows="10"
             placeholder="请输入评价"
@@ -107,10 +107,10 @@ export default {
       ],
       rules: {
         teacherResult: [
-          { required: true, message: '成绩不能为空', trigger: 'change' }
+          { required: true, message: '成绩不能为空', trigger: 'blur' }
         ],
         teacherAppraise: [
-          { required: true, message: '不能为空', trigger: 'change' }
+          { required: true, message: '不能为空', trigger: 'blur' }
         ]
       }
     };
@@ -133,14 +133,17 @@ export default {
               this.goBack();
             })
             .catch(error => {
-              console.log(error);
+              this.goBack();
             });
+            this.form= {}
         } else {
           this.form = {
             firmResult: res[1].data.firmResult,
             attendQualified: res[1].data.attendQualified,
             workComplete: res[1].data.workComplete,
-            firmComment: res[1].data.firmComment
+            firmComment: res[1].data.firmComment,
+            teacherResult:res[1].data.teacherResult || '',
+            teacherAppraise:res[1].data.teacherResult || ''
           };
         }
       })
@@ -163,6 +166,7 @@ export default {
         }
         const param = {
           ...this.form,
+          teacherId:sessionInfo.userId,
           userTableId: this.$route.query.userInfo.userId,
           firmId: sessionInfo.userId,
           creatBy: sessionInfo.userId,

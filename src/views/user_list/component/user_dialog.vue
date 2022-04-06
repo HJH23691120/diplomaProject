@@ -45,7 +45,7 @@
           >
           </el-input>
         </el-form-item>
-        <el-form-item label="请确认密码" prop="confirmPassword">
+        <el-form-item label="请确认密码" prop="confirmPassword" v-if="isCreate">
           <el-input
             v-model="confirmPassword"
             type="password"
@@ -90,7 +90,7 @@ import API from '@apis/userlist/index.js';
 export default {
   name: 'userDialog',
   props: {
-    data: {
+    editData: {
       type: Object,
       default() {
         return {};
@@ -104,6 +104,11 @@ export default {
     },
     isCreate: {
       type: Boolean
+    }
+  },
+  watch:{
+    editData(val){
+      this.form=val;
     }
   },
   computed: {
@@ -130,6 +135,10 @@ export default {
         {
           label: '企业导师',
           key: '2'
+        },
+        {
+          label: '管理员',
+          key: '1'
         }
       ],
       userGenderList: ['男', '女'],
@@ -170,7 +179,8 @@ export default {
   },
   created() {
     if (!this.isCreate) {
-      this.form = this.data;
+      console.log(this.editData);
+      this.form = this.editData;
     }
   },
   methods: {
@@ -209,6 +219,8 @@ export default {
             return;
           }
           this.$message.success('添加用户成功');
+           this.cancel();
+           this.$emit('success')
         })
         .finally(() => {
           this.isLoading = false;
@@ -218,10 +230,12 @@ export default {
       API.updateUser(data)
         .then(res => {
           if (res.code === -1) {
-            this.$message.error('添加用户失败');
+            this.$message.error('修改用户失败');
             return;
           }
-          this.$message.success('添加用户成功');
+          this.$message.success('修改用户成功');
+          this.cancel();
+          this.$emit('success')
         })
         .finally(() => {
           this.isLoading = false;

@@ -201,7 +201,7 @@ const router = new Router({
   routes: routeMaps // 抛出路由数组
 });
 router.beforeEach((to, from, next) => {
-  const isLogin = sessionStorage.getItem('useID');
+  const isLogin = sessionStorage.getItem('userId');
   console.log(to.path);
   if (to.path !== '/login') {
     if (!isLogin) {
