@@ -9,7 +9,7 @@
         :inline="false"
         size="normal"
       >
-        <el-form-item prop="userId" label="用户名：">
+        <el-form-item prop="userId" label="用户ID：">
           <el-input v-model="form.userId" placeholder="请输入用户ID" clearable>
           </el-input>
         </el-form-item>

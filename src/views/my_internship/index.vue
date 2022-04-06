@@ -1,9 +1,13 @@
 <template>
   <div class="container">
     <div class="button">
-    <el-button type="text" @click="changeEdit" v-if="form.agreeApply!=='1' &&form.id">
-      修改
-    </el-button>
+        <el-button
+        type="text"
+        @click="changeEdit"
+        v-if="form.agreeApply !== '1' && form.id"
+      >
+        修改
+      </el-button>
     </div>
     <el-form
       :model="form"
@@ -48,21 +52,23 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="企业导师" prop="firmTutor">
-          <el-select
-            v-model="form.firmTutor"
-            filterable
-            remote
-            reserve-keyword
-            placeholder="请输入企业导师"
-            :remote-method="querySearch"
-            :loading="selectLoading">
-              <el-option
-                v-for="item in tutorList"
-                :key="item.user_id"
-                :label="item.user_name"
-                :value="item.user_name">
-              </el-option>
-              </el-select>
+        <el-select
+          v-model="form.firmTutor"
+          filterable
+          remote
+          reserve-keyword
+          placeholder="请输入企业导师"
+          :remote-method="querySearch"
+          :loading="selectLoading"
+        >
+          <el-option
+            v-for="item in tutorList"
+            :key="item.user_id"
+            :label="item.user_name"
+            :value="item.user_name"
+          >
+          </el-option>
+        </el-select>
       </el-form-item>
       <el-form-item label="企业待遇" prop="practiceTreatment">
         <el-input
@@ -76,7 +82,8 @@
         <el-date-picker
           v-model="form.practiceTime"
           type="datetime"
-          placeholder="选择日期时间">
+          placeholder="选择日期时间"
+        >
         </el-date-picker>
       </el-form-item>
       <el-form-item label="实习地点" prop="practicePlace">
@@ -87,7 +94,7 @@
           clearable
         ></el-input>
       </el-form-item>
-      <el-form-item label="证明材料" >
+      <el-form-item label="证明材料">
         <el-upload
           action
           ref="upload"
@@ -101,15 +108,17 @@
         </el-upload>
       </el-form-item>
       <el-form-item label="审核结果" v-if="form.agreeApply">
-       {{form.agreeApply==='1'?'同意':'驳回'}}
+        {{ form.agreeApply === "1" ? "同意" : "驳回" }}
       </el-form-item>
     </el-form>
     <div class="button-box">
       <div v-if="form.id">
-        <div class="tips" v-if="form.agreeApply==='1'">已审核过的实习申请不允许修改</div>
+        <div class="tips" v-if="form.agreeApply === '1'">
+          已审核过的实习申请不允许修改
+        </div>
         <el-button
-          type="primary"          
-          :disabled="form.agreeApply==='1'"
+          type="primary"
+          :disabled="form.agreeApply === '1'"
           size="default"
           @click="update"
           >修改申请</el-button
@@ -145,12 +154,8 @@ export default {
         firmContact: [
           { required: true, message: '不能为空', trigger: 'change' }
         ],
-        firmTel: [
-          { required: true, message: '不能为空', trigger: 'change' }
-        ],
-        firmTutor: [
-          { required: true, message: '不能为空', trigger: 'blur' }
-        ],
+        firmTel: [{ required: true, message: '不能为空', trigger: 'change' }],
+        firmTutor: [{ required: true, message: '不能为空', trigger: 'blur' }],
         practiceTreatment: [
           { required: true, message: '不能为空', trigger: 'change' }
         ],
@@ -175,12 +180,12 @@ export default {
         practicePlace: '',
         uploaadProve: ''
       },
-      tutorList:[],
-      selectLoading:false
+      tutorList: [],
+      selectLoading: false
     };
   },
   created() {
-    this.initData()
+    this.initData();
   },
   mounted() {},
   methods: {
@@ -189,11 +194,11 @@ export default {
         userId: sessionStorage.getItem('userId')
       }).then(res => {
         if (res.code === -1) {
-          this.$message.warning('未查出实习申请')
+          this.$message.warning('未查出实习申请');
           return;
         }
         this.form = res.data;
-        this.isDisabled=true;
+        this.isDisabled = true;
       });
     },
     update() {
@@ -210,7 +215,7 @@ export default {
         }
         this.$message.success('修改成功');
         this.form = res.data;
-        this.isDisabled=true;
+        this.isDisabled = true;
       });
     },
     confirm() {
@@ -227,7 +232,7 @@ export default {
         }
         this.$message.success('提交成功');
         this.form = res.data;
-        this.isDisabled=true;
+        this.isDisabled = true;
       });
     },
     handleUpload(file) {
@@ -263,34 +268,36 @@ export default {
       };
       reader.readAsArrayBuffer(file.raw);
     },
-    querySearch(query){
-    console.log(query);
-    if(!query){
-      return;
-    }
-    this.selectLoading=true
+    querySearch(query) {
+      console.log(query);
+      if (!query) {
+        return;
+      }
+      this.selectLoading = true;
       API.getFirmTutro({
-        userName:query
-      }).then(res=>{
-        if(res.code===-1){
-          this.$message.error('未查询到企业导师');
-          return;
-        }
-       this.tutorList=res.data;
-      }).finally(()=>{
-        this.selectLoading=false
+        userName: query
       })
-
+        .then(res => {
+          if (res.code === -1) {
+            this.$message.error('未查询到企业导师');
+            return;
+          }
+          this.tutorList = res.data;
+        })
+        .finally(() => {
+          this.selectLoading = false;
+        });
     },
-    changeEdit(){
-      this.isDisabled=false
+    changeEdit() {
+      this.isDisabled = false;
     }
   }
 };
 </script>
 <style lang="scss" scoped>
 .container {
-  .el-input,.el-select {
+  .el-input,
+  .el-select {
     width: 480px;
   }
   .button-box {
@@ -305,13 +312,14 @@ export default {
       color: red;
     }
   }
-  .button{
-    // width: 500px;
-    // height: 50px;
-    // position: relative;
-    .el-button{
-      // position: absolute;
-      // right: 10px;
+  .button {
+     width: 200px;
+    height: 50px;
+    position: absolute;
+    left: 420px;
+    top: 23px;
+    .el-button {
+      float: right;
     }
   }
 }

@@ -5,7 +5,12 @@
       <!-- 周记选择框-->
       <div class="select">
         <span>请选择第</span
-        ><el-select v-model="practiceWeek" clearable filterable @change="handleWeek">
+        ><el-select
+          v-model="practiceWeek"
+          clearable
+          filterable
+          @change="handleWeek"
+        >
           <el-option v-for="item in 8" :key="item" :label="item" :value="item">
           </el-option>
         </el-select>
@@ -18,17 +23,22 @@
         :rows="16"
         readonly
       ></el-input>
-   
+
       <div class="audit-box">
-      <el-input
-        v-if="weekReportAudit"
-        :value="weekReportAudit"
-        type="textarea"
-        size="normal"
-        :rows="16"
-        disabled
-      ></el-input>
-        <el-button type="primary" v-if="!weekReportAudit" size="default" @click="audit">
+        <el-input
+          v-if="weekReportAudit"
+          :value="weekReportAudit"
+          type="textarea"
+          size="normal"
+          :rows="16"
+          disabled
+        ></el-input>
+        <el-button
+          type="primary"
+          v-if="!weekReportAudit"
+          size="default"
+          @click="audit"
+        >
           审核
         </el-button>
       </div>
@@ -63,8 +73,8 @@ export default {
   },
   methods: {
     handleWeek(val) {
-      if(val===''){
-        return
+      if (val === '') {
+        return;
       }
       this.initData();
     },
@@ -72,13 +82,15 @@ export default {
       const tempInfo = this.$route.query.userInfo;
       const param = {
         userId: tempInfo.userId,
-        practiceWeek: this.practiceWeek+''
+        practiceWeek: this.practiceWeek + ''
       };
       API.getWeek(param).then(res => {
         if (res.code === -1) {
-          this.$message.error(`第${this.practiceWeek}周的周记为空，请联系学生添加`);
-          this.weekReportAudit=''
-          this.weekReport=''
+          this.$message.error(
+            `第${this.practiceWeek}周的周记为空，请联系学生添加`
+          );
+          this.weekReportAudit = '';
+          this.weekReport = '';
           return;
         }
         this.weekReport = res.data.practiceWeekReport;
@@ -90,7 +102,7 @@ export default {
     },
     confirm(data) {
       const tempInfo = this.$route.query.userInfo;
-      const userInfo = JSON.parse(sessionStorage.getItem('userInfo')|| '{}');
+      const userInfo = JSON.parse(sessionStorage.getItem('userInfo') || '{}');
       const param = {
         userTableId: tempInfo.userId,
         practiceWeek: String(this.week),

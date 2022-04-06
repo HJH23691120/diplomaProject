@@ -48,7 +48,9 @@
     </el-form>
     <div class="button-box">
       <div v-if="isHas">
-        <div class="tips" v-if="form.weekReportAudit">已审核过的周记不允许修改</div>
+        <div class="tips" v-if="form.weekReportAudit">
+          已审核过的周记不允许修改
+        </div>
         <el-button
           type="primary"
           :disabled="form.weekReportAudit"
@@ -72,8 +74,8 @@ export default {
   data() {
     return {
       form: {
-        practiceWeek:1,
-        practiceWeekReport:'',
+        practiceWeek: 1,
+        practiceWeekReport: ''
       },
       isHas: false,
       loading: false
@@ -101,7 +103,7 @@ export default {
             return;
           }
           this.form = res.data || {};
-          this.form.practiceWeek=Number(res.data.practiceWeek || '1')
+          this.form.practiceWeek = Number(res.data.practiceWeek || '1');
           this.isHas = true;
         })
         .finally(() => {
@@ -126,7 +128,7 @@ export default {
             return;
           }
           this.form = res.data || {};
-          this.form.practiceWeek=Number(res.data.practiceWeek || '1')
+          this.form.practiceWeek = Number(res.data.practiceWeek || '1');
         })
         .finally(() => {
           this.loading = false;
@@ -135,7 +137,7 @@ export default {
     updateWeek() {
       const id = sessionStorage.getItem('userId');
       const param = {
-        id:this.form.id,
+        id: this.form.id,
         userTableId: id,
         practiceWeek: this.form.practiceWeek + '',
         creatBy: id,
@@ -151,8 +153,7 @@ export default {
           }
           this.$message.success('修改成功');
           this.form = res.data || {};
-          this.form.practiceWeek=Number(res.data.practiceWeek || '1')
-
+          this.form.practiceWeek = Number(res.data.practiceWeek || '1');
         })
         .finally(() => {
           this.loading = false;

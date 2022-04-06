@@ -26,7 +26,7 @@
           :body-style="{ height: '100%', padding: '0' }"
         >
           <el-menu mode="horizontal" :default-active="selectedIndex">
-            <div v-for="route in routeMaps" :key="route.path">
+            <div v-for="route in routeList" :key="route.path">
               <router-link :to="route.path">
                 <el-menu-item
                   v-if="!route.hidden"
@@ -66,11 +66,17 @@ export default {
   },
   data() {
     return {
-      routeMaps,
+      routeList: [],
       selectedIndex: '/'
     };
   },
   created() {
+    const tempInfo = JSON.parse(sessionStorage.getItem('userInfo') || '{}');
+    const tempArr = routeMaps.filter(item => {
+      console.log(item);
+      item.meta.limits.includes(tempInfo.userRole);
+    });
+    this.routeList = tempArr.length !== 0 ? tempArr : routeMaps;
     if (this.$route.name === 'homepage') {
       this.selectedIndex = '/';
     } else {
@@ -140,7 +146,8 @@ export default {
       border-radius: 5px;
       margin: 82px 10px 0 270px;
       height: calc(100% - 82px);
-      .bread-crumb{
+      position: relative;
+      .bread-crumb {
         margin: 10px 0 30px 0;
       }
     }

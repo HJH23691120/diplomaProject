@@ -82,7 +82,7 @@ export default {
     };
   },
   created() {
-    this.initData()
+    this.initData();
   },
   methods: {
     initData() {
@@ -111,7 +111,7 @@ export default {
           this.$message.error('审核实习申请失败');
           return;
         }
-        this.$message.success('审核成功')
+        this.$message.success('审核成功');
         this.form = res.data;
       });
     }

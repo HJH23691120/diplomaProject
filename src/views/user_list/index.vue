@@ -24,7 +24,13 @@
         >新增用户</el-button
       >
     </div>
-    <el-table :data="tableData" border stripe max-height="850px" :loading="loading">
+    <el-table
+      :data="tableData"
+      border
+      stripe
+      max-height="850px"
+      :loading="loading"
+    >
       <el-table-column
         prop="userId"
         label="用户ID"
@@ -156,7 +162,7 @@ export default {
   created() {
     const tempInfo = sessionStorage.getItem('userInfo');
     this.userInfo = JSON.parse(tempInfo || '{}');
-    this.getTableData()
+    this.getTableData();
   },
   mounted() {},
   methods: {
@@ -171,33 +177,45 @@ export default {
     },
     getTableData() {
       const tempRole = this.userInfo.userRole;
-      this.loading=true;
-      const param={
-        userClass : tempRole==='2'?'admin':['3','4'].includes(tempRole)?this.userInfo.userClass:'',
-        userRole : tempRole === '1'?'':'4',
-        userId : tempRole==='2'?this.userInfo.userId:tempRole==='1'?'':'admin',
-        pageIndex : this.pageNum,
-        pageSize : this.pageSize,
-      }
-      API.getUserList(param).then(res=>{
-        if(res.code===-1){
-          this.$message.error('未查到用户信息');
-          return;
-        }
-        this.tableData=res.data.list;
-        this.total=res.data.totalSize
-      }).finally(()=>{
-        this.loading=false;
-      })
+      this.loading = true;
+      const param = {
+        userClass:
+          tempRole === '2'
+            ? 'admin'
+            : ['3', '4'].includes(tempRole)
+            ? this.userInfo.userClass
+            : '',
+        userRole: tempRole === '1' ? '' : '4',
+        userId:
+          tempRole === '2'
+            ? this.userInfo.userId
+            : tempRole === '1'
+            ? ''
+            : 'admin',
+        pageIndex: this.pageNum,
+        pageSize: this.pageSize
+      };
+      API.getUserList(param)
+        .then(res => {
+          if (res.code === -1) {
+            this.$message.error('未查到用户信息');
+            return;
+          }
+          this.tableData = res.data.list;
+          this.total = res.data.totalSize;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     search() {
-      this.pageNum=1;
-      this.getTableData()
+      this.pageNum = 1;
+      this.getTableData();
     },
     reset() {
-      Object.keys(this.form).forEach(key=>this.form[key]='')
-       this.pageNum=1;
-      this.getTableData()
+      Object.keys(this.form).forEach(key => (this.form[key] = ''));
+      this.pageNum = 1;
+      this.getTableData();
     },
     addUser() {
       this.visible = true;
@@ -223,8 +241,8 @@ export default {
               this.$message.error('删除失败');
               return;
             }
-            this.$message.success('删除成功')
-            this.getTableData()
+            this.$message.success('删除成功');
+            this.getTableData();
           });
         })
         .catch(error => {
@@ -243,7 +261,7 @@ export default {
     float: right;
   }
   .add {
-    margin: 20px 0;
+    margin-bottom: 20px;
   }
 }
 </style>

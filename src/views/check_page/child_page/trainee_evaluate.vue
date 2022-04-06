@@ -20,22 +20,14 @@
         </el-form-item>
         <el-form-item label="考勤是否合格" prop="attendQualified">
           <el-radio-group v-model="form.attendQualified">
-            <el-radio
-              v-for="item in options"
-              :key="item.key"
-              :label="item.key"
-            >
+            <el-radio v-for="item in options" :key="item.key" :label="item.key">
               {{ item.label }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="工作是否完成" prop="workComplete">
           <el-radio-group v-model="form.workComplete">
-            <el-radio
-              v-for="item in options"
-              :key="item.key"
-              :label="item.key"
-            >
+            <el-radio v-for="item in options" :key="item.key" :label="item.key">
               {{ item.label }}
             </el-radio>
           </el-radio-group>
@@ -69,7 +61,7 @@ export default {
     return {
       remark: '',
       isDisabled: false,
-      loading:false,
+      loading: false,
       form: {
         firmResult: '',
         attendQualified: '',
@@ -102,23 +94,24 @@ export default {
       }
     };
   },
-  created(){
-    this.initData()
+  created() {
+    this.initData();
   },
   methods: {
-    initData(){
+    initData() {
       API.getEvaluate({
-         userId: this.$route.query.userInfo.userId,
-      }) .then(res => {
-            if (res.code === -1) {
-              this.$message.error('查询失败');
-              return;
-            }
-            this.form = res.data || {};
-          })
-          .finally(() => {
-            this.loading = false;
-          });
+        userId: this.$route.query.userInfo.userId
+      })
+        .then(res => {
+          if (res.code === -1) {
+            this.$message.error('查询失败');
+            return;
+          }
+          this.form = res.data || {};
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     goBack() {
       this.$router.go(-1);

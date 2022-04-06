@@ -33,7 +33,11 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item prop="userName" label="用户名：">
-          <el-input v-model="form.userName" placeholder="请输入用户名" clearable>
+          <el-input
+            v-model="form.userName"
+            placeholder="请输入用户名"
+            clearable
+          >
           </el-input>
         </el-form-item>
         <el-form-item label="新密码" prop="userPwd">
@@ -106,9 +110,9 @@ export default {
       type: Boolean
     }
   },
-  watch:{
-    editData(val){
-      this.form=val;
+  watch: {
+    editData(val) {
+      this.form = val;
     }
   },
   computed: {
@@ -219,8 +223,8 @@ export default {
             return;
           }
           this.$message.success('添加用户成功');
-           this.cancel();
-           this.$emit('success')
+          this.cancel();
+          this.$emit('success');
         })
         .finally(() => {
           this.isLoading = false;
@@ -235,7 +239,7 @@ export default {
           }
           this.$message.success('修改用户成功');
           this.cancel();
-          this.$emit('success')
+          this.$emit('success');
         })
         .finally(() => {
           this.isLoading = false;

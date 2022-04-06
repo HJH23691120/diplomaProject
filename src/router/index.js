@@ -12,7 +12,8 @@ export const routeMaps = [
     hidden: true,
     meta: {
       title: '首页',
-      hiddenBack: true
+      hiddenBack: true,
+      limits: ['1', '2', '3', '4']
     },
     children: [
       {
@@ -34,6 +35,7 @@ export const routeMaps = [
     hidden: false,
     meta: {
       title: '学生管理',
+      limits: ['1', '2', '3']
     },
     children: [
       {
@@ -82,7 +84,8 @@ export const routeMaps = [
     hidden: true,
     meta: {
       title: '个人中心',
-      hiddenBack: true
+      hiddenBack: true,
+      limits: ['1', '2', '3', '4']
     },
     children: [
       {
@@ -90,7 +93,7 @@ export const routeMaps = [
         name: 'personalCenter',
         component: () => import('@views/personal_center/index.vue'),
         meta: {
-          title: '',
+          title: '个人中心',
           hiddenBack: true
         }
       }
@@ -104,7 +107,8 @@ export const routeMaps = [
     hidden: false,
     meta: {
       title: '我的周记',
-      hiddenBack: true
+      hiddenBack: true,
+      limits: ['4']
     },
     children: [
       {
@@ -126,7 +130,8 @@ export const routeMaps = [
     hidden: false,
     meta: {
       title: '我的成绩',
-      hiddenBack: true
+      hiddenBack: true,
+      limits: ['4']
     },
     children: [
       {
@@ -148,7 +153,8 @@ export const routeMaps = [
     hidden: false,
     meta: {
       title: '实习申请',
-      hiddenBack: true
+      hiddenBack: true,
+      limits: ['4']
     },
     children: [
       {
@@ -170,7 +176,7 @@ export const routeMaps = [
     hidden: false,
     meta: {
       title: '用户管理',
-      limits: ['1'],
+      limits: ['1']
     },
     children: [
       {
@@ -191,7 +197,8 @@ export const routeMaps = [
     component: () => import('@views/login/index.vue'),
     hidden: true,
     meta: {
-      title: '登录'
+      title: '登录',
+      limits: ['1', '2', '3', '4']
     }
   }
 ];

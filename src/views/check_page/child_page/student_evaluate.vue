@@ -21,22 +21,14 @@
         </el-form-item>
         <el-form-item label="考勤是否合格">
           <el-radio-group v-model="form.attendQualified" disabled>
-            <el-radio
-              v-for="item in options"
-              :key="item.key"
-              :label="item.key"
-            >
+            <el-radio v-for="item in options" :key="item.key" :label="item.key">
               {{ item.label }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="工作是否完成">
           <el-radio-group v-model="form.workComplete" disabled>
-            <el-radio
-              v-for="item in options"
-              :key="item.key"
-              :label="item.key"
-            >
+            <el-radio v-for="item in options" :key="item.key" :label="item.key">
               {{ item.label }}
             </el-radio>
           </el-radio-group>
@@ -91,9 +83,8 @@ export default {
         attendQualified: '',
         workComplete: '',
         firmComment: '',
-        teacherResult:'',
-        teacherAppraise:''
-
+        teacherResult: '',
+        teacherAppraise: ''
       },
       options: [
         {
@@ -135,15 +126,15 @@ export default {
             .catch(error => {
               this.goBack();
             });
-            this.form= {}
+          this.form = {};
         } else {
           this.form = {
             firmResult: res[1].data.firmResult,
             attendQualified: res[1].data.attendQualified,
             workComplete: res[1].data.workComplete,
             firmComment: res[1].data.firmComment,
-            teacherResult:res[1].data.teacherResult || '',
-            teacherAppraise:res[1].data.teacherResult || ''
+            teacherResult: res[1].data.teacherResult || '',
+            teacherAppraise: res[1].data.teacherResult || ''
           };
         }
       })
@@ -166,7 +157,7 @@ export default {
         }
         const param = {
           ...this.form,
-          teacherId:sessionInfo.userId,
+          teacherId: sessionInfo.userId,
           userTableId: this.$route.query.userInfo.userId,
           firmId: sessionInfo.userId,
           creatBy: sessionInfo.userId,

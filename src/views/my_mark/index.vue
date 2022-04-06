@@ -18,10 +18,10 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="考勤是否合格">
-          {{radioMap[form.attendQualified]}}
+          {{ radioMap[form.attendQualified] }}
         </el-form-item>
         <el-form-item label="工作是否完成">
-            {{radioMap[form.workComplete]}}
+          {{ radioMap[form.workComplete] }}
         </el-form-item>
         <el-form-item label="企业导师评语">
           <el-input
@@ -57,13 +57,12 @@
 import API from '@apis/student_mange/index';
 const sessionInfo = JSON.parse(sessionStorage.getItem('userInfo') || '{}');
 const radioMap = {
-  '1':'是',
-  '0':'否'
-}
+  '1': '是',
+  '0': '否'
+};
 export default {
   name: 'MyMark',
-  components: {
-  },
+  components: {},
   data() {
     return {
       radioMap,

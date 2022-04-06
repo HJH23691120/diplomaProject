@@ -1,7 +1,6 @@
 <template>
   <div class="container">
     <header class="header">
-      个人中心
       <el-button type="text" size="default" @click="changeEdit" v-if="isEdit"
         >修改</el-button
       >
@@ -43,7 +42,11 @@
         >
         </el-input>
       </el-form-item>
-      <el-form-item label="请确认密码" prop="form.confirmPassword" v-if="!isEdit">
+      <el-form-item
+        label="请确认密码"
+        prop="form.confirmPassword"
+        v-if="!isEdit"
+      >
         <el-input
           v-model="form.confirmPassword"
           type="password"
@@ -97,14 +100,14 @@ export default {
             required: true,
             validator: this.checkPass.bind(this),
             trigger: 'change'
-          },
+          }
         ],
         useTel: [
           {
             required: true,
             validator: this.checkTel.bind(this),
             trigger: 'blur'
-          },
+          }
         ]
       },
       form: {
@@ -117,11 +120,11 @@ export default {
         userTel: ''
       },
       confirmPassword: '',
-      userType:{
-        '1':'管理员',
-        '2':'企业导师',
-        '3':'校内导师',
-        '4':'学生',
+      userType: {
+        '1': '管理员',
+        '2': '企业导师',
+        '3': '校内导师',
+        '4': '学生'
       }
     };
   },
@@ -139,7 +142,7 @@ export default {
         }
         this.form = res.data;
         console.log(this.form);
-        this.form.userRole=res.data.userRole
+        this.form.userRole = res.data.userRole;
       });
     },
     checkPass(rule, value, callback) {
@@ -182,7 +185,7 @@ export default {
               return;
             }
             this.isEdit = true;
-            this.$message.success('修改成功')
+            this.$message.success('修改成功');
           })
           .finally(() => {
             this.isLoading = false;
@@ -207,11 +210,11 @@ export default {
     }
   }
   .header {
-    margin: 0px 0 15px 0;
-    width: 500px;
-    line-height: 40px;
-    font-weight: 700;
-    font-size: 25px;
+    width: 200px;
+    height: 50px;
+    position: absolute;
+    left: 320px;
+    top: 23px;
     .el-button {
       float: right;
     }
