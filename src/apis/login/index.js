@@ -12,9 +12,13 @@ const addUser = function(data) {
 const getUserId = function(data) {
   return axios.post(`${baseUrl}/getUserId`, JSON.stringify(data));
 };
+const upload = function(data) {
+  return axios.post(`${baseUrl}/upload`, JSON.stringify(data));
+};
 export default {
   login,
   updatePwd,
   getUserId,
-  addUser
+  addUser,
+  upload
 };

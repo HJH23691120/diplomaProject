@@ -74,12 +74,17 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="证明材料" prop="uploaadProve">
-        <el-input
-          v-model="form.uploaadProve"
-          placeholder="请输入证明材料"
-          size="normal"
-          clearable
-        ></el-input>
+        <el-upload
+          action
+          ref="upload"
+          :auto-upload="false"
+          :on-change="handleUpload"
+        >
+          <el-button type="primary" plain size="small" :loading="uploadLoading">
+            <i class="nb-icon-plus"></i>
+            上传文件
+          </el-button>
+        </el-upload>
       </el-form-item>
     </el-form>
     <div class="button-box">
@@ -112,6 +117,7 @@ export default {
     return {
       isEdit: false,
       loading: false,
+      uploadLoading: false,
       rules: {
         unitName: [
           { required: true, message: '账号不能为空', trigger: 'change' }
@@ -200,6 +206,39 @@ export default {
         this.$message.success('修改成功');
         this.form = res.data;
       });
+    },
+    handleUpload(file) {
+      this.errMsg = '';
+      // handleUpload(file, fileList) {
+      // const reg = /\.xlsx$/;
+      // const fileName = file.name;
+      // if (!reg.test(fileName)) {
+      //   this.$alert('请上传正确的表格文件！', '提示', {
+      //     confirmButtonText: '确定',
+      //     type: 'warning'
+      //   });
+      //   return;
+      // }
+      this.uploadLoading = true;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const fileBuffer = reader.result;
+        API.upload({
+          userId: sessionStorage.getItem('userId'),
+          File: fileBuffer
+        })
+          .then(res => {
+            if (res.code === -1) {
+              this.$message.error('上传失败');
+              return;
+            }
+            this.$message.success('上传成功');
+          })
+          .finally(() => {
+            this.uploadLoading = false;
+          });
+      };
+      reader.readAsArrayBuffer(file.raw);
     }
   }
 };
