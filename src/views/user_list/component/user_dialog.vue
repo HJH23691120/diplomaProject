@@ -25,15 +25,15 @@
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item label="用户性别" size="normal" prop="useGender">
-          <el-radio-group v-model="form.useGender">
-            <el-radio v-for="item in useGenderList" :key="item" :label="item">
+        <el-form-item label="用户性别" size="normal" prop="userGender">
+          <el-radio-group v-model="form.userGender">
+            <el-radio v-for="item in userGenderList" :key="item" :label="item">
               {{ item }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item prop="useName" label="用户名：">
-          <el-input v-model="form.useName" placeholder="请输入用户名" clearable>
+        <el-form-item prop="userName" label="用户名：">
+          <el-input v-model="form.userName" placeholder="请输入用户名" clearable>
           </el-input>
         </el-form-item>
         <el-form-item label="新密码" prop="userPwd">
@@ -132,7 +132,7 @@ export default {
           key: '2'
         }
       ],
-      useGenderList: ['男', '女'],
+      userGenderList: ['男', '女'],
       rules: {
         userRole: [
           { required: true, message: '用户角色不能为空', trigger: 'change' }
@@ -140,10 +140,10 @@ export default {
         useClass: [
           { required: true, message: '用户班级不能为空', trigger: 'change' }
         ],
-        useGender: [
+        userGender: [
           { required: true, message: '用户性别不能为空', trigger: 'change' }
         ],
-        useName: [
+        userName: [
           { required: true, message: '账号不能为空', trigger: 'change' }
         ],
         userId: [
@@ -159,7 +159,7 @@ export default {
       form: {
         userId: '',
         userPwd: '',
-        useName: '',
+        userName: '',
         userGender: '',
         userClass: '',
         userRole: '',

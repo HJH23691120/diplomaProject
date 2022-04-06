@@ -12,7 +12,7 @@
         <el-input v-model="form.userClass" placeholder="请输入班级"></el-input>
       </el-form-item>
       <el-form-item label="">
-        <el-input v-model="form.useRole" placeholder="请选择角色"></el-input>
+        <el-input v-model="form.userRole" placeholder="请选择角色"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button @click="reset">重置</el-button>

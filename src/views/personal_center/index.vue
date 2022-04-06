@@ -17,40 +17,35 @@
       :disabled="isEdit"
       :loading="isLoading"
     >
-      <el-form-item label="用户角色" size="normal">
-        <el-radio-group v-model="form.useRole" :disabled="true">
-          <el-radio
-            v-for="item in useRoleList"
-            :key="item.key"
-            :label="item.label"
-          >
-            {{ item.label }}
-          </el-radio>
-        </el-radio-group>
+      <el-form-item label="用户ID" size="normal">
+        {{ form.userId }}
       </el-form-item>
-      <el-form-item label="用户性别" size="normal" prop="useGender">
-        <el-radio-group v-model="form.useGender">
-          <el-radio v-for="item in useGenderList" :key="item" :label="item">
+      <el-form-item label="用户角色" size="normal">
+        {{ userType[form.userRole] }}
+      </el-form-item>
+      <el-form-item label="用户性别" size="normal" prop="userGender">
+        <el-radio-group v-model="form.userGender">
+          <el-radio v-for="item in userGenderList" :key="item" :label="item">
             {{ item }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item prop="useName" label="用户名：">
-        <el-input v-model="form.useName" placeholder="请输入用户名" clearable>
+      <el-form-item prop="userName" label="用户名：">
+        <el-input v-model="form.userName" placeholder="请输入用户名" clearable>
         </el-input>
       </el-form-item>
-      <el-form-item label="新密码" prop="newPwd">
+      <el-form-item label="密码" prop="userPwd">
         <el-input
-          v-model="form.newPwd"
+          v-model="form.userPwd"
           type="password"
           placeholder="请输入密码"
           clearable
         >
         </el-input>
       </el-form-item>
-      <el-form-item label="请确认密码" prop="confirmPassword">
+      <el-form-item label="请确认密码" prop="form.confirmPassword" v-if="!isEdit">
         <el-input
-          v-model="confirmPassword"
+          v-model="form.confirmPassword"
           type="password"
           placeholder="请输入密码"
           clearable
@@ -84,7 +79,7 @@
 </template>
 
 <script>
-import { rules, useRoleList, useGenderList } from './../login/until';
+import { rules, userRoleList, userGenderList } from './../login/until';
 import API from '@apis/userlist/index.js';
 export default {
   name: 'personalCenter',
@@ -93,8 +88,8 @@ export default {
     return {
       isLoading: false,
       isEdit: true,
-      useRoleList,
-      useGenderList,
+      userRoleList,
+      userGenderList,
       myRules: {
         ...rules,
         confirmPassword: [
@@ -114,27 +109,37 @@ export default {
       },
       form: {
         userId: '',
-        newPwd: '',
-        useName: '',
+        userPwd: '',
+        userName: '',
         userGender: '',
         userClass: '',
-        userRole: '',
+        userRole: '1',
         userTel: ''
       },
-      confirmPassword: ''
+      confirmPassword: '',
+      userType:{
+        '1':'管理员',
+        '2':'企业导师',
+        '3':'校内导师',
+        '4':'学生',
+      }
     };
   },
-  created() {},
-  mounted() {},
+  created() {
+    this.init();
+  },
   methods: {
     init() {
       const tempUserID = sessionStorage.getItem('userId');
+      console.log(tempUserID);
       API.getUser({ userId: tempUserID }).then(res => {
         if (res.code === -1) {
           this.$message('未查询到用户信息');
           return;
         }
         this.form = res.data;
+        console.log(this.form);
+        this.form.userRole=res.data.userRole
       });
     },
     checkPass(rule, value, callback) {
@@ -143,7 +148,7 @@ export default {
         return;
       }
 
-      if (value !== this.form.newPwd) {
+      if (value !== this.form.userPwd) {
         callback('两次输入的密码必须一致');
         return;
       }
@@ -177,6 +182,7 @@ export default {
               return;
             }
             this.isEdit = true;
+            this.$message.success('修改成功')
           })
           .finally(() => {
             this.isLoading = false;
@@ -195,13 +201,13 @@ export default {
     }
   }
   .button-box {
-    margin-top: 40px;
+    margin-top: 20px;
     .el-button {
       width: 243px;
     }
   }
   .header {
-    margin: 15px 0 15px 0;
+    margin: 0px 0 15px 0;
     width: 500px;
     line-height: 40px;
     font-weight: 700;

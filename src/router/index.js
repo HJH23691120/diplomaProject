@@ -90,7 +90,7 @@ export const routeMaps = [
         name: 'personalCenter',
         component: () => import('@views/personal_center/index.vue'),
         meta: {
-          title: '个人中心',
+          title: '',
           hiddenBack: true
         }
       }

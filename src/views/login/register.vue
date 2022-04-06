@@ -8,10 +8,13 @@
       :inline="false"
       size="normal"
     >
-      <el-form-item label="用户角色" size="normal" prop="useRole">
-        <el-radio-group v-model="form.useRole">
+      <el-form-item label="用户ID" size="normal">
+        <el-input :value="form.userId" disabled></el-input>
+      </el-form-item>
+      <el-form-item label="用户角色" size="normal" prop="userRole">
+        <el-radio-group v-model="form.userRole">
           <el-radio
-            v-for="item in useRoleList"
+            v-for="item in userRoleList"
             :key="item.key"
             :label="item.key"
           >
@@ -19,15 +22,15 @@
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="用户性别" size="normal" prop="useGender">
-        <el-radio-group v-model="form.useGender">
-          <el-radio v-for="item in useGenderList" :key="item" :label="item">
+      <el-form-item label="用户性别" size="normal" prop="userGender">
+        <el-radio-group v-model="form.userGender">
+          <el-radio v-for="item in userGenderList" :key="item" :label="item">
             {{ item }}
           </el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item prop="useName" label="用户名：">
-        <el-input v-model="form.useName" placeholder="请输入用户名" clearable>
+      <el-form-item prop="userName" label="用户名：">
+        <el-input v-model="form.userName" placeholder="请输入用户名" clearable>
         </el-input>
       </el-form-item>
       <el-form-item label="新密码" prop="userPwd">
@@ -50,7 +53,7 @@
       </el-form-item>
       <el-form-item
         label="用户班级"
-        v-if="['3', '4'].includes(form.useRole)"
+        v-if="['3', '4'].includes(form.userRole)"
         prop="useClass"
       >
         <el-input
@@ -82,15 +85,15 @@
 
 <script>
 import API from '@apis/login/index.js';
-import { rules, useRoleList, useGenderList } from './until';
+import { rules, userRoleList, userGenderList } from './until';
 const reg = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57])[0-9]{8}$/;
 export default {
   name: 'register',
   data() {
     return {
       isLoading: false,
-      useRoleList,
-      useGenderList,
+      userRoleList,
+      userGenderList,
       myRules: {
         ...rules,
         confirmPassword: [
@@ -112,7 +115,7 @@ export default {
       form: {
         userId: '',
         userPwd: '',
-        useName: '',
+        userName: '',
         userGender: '',
         userClass: '',
         userRole: '',
@@ -179,8 +182,7 @@ export default {
               this.$message.error('添加用户失败');
               return;
             }
-            sessionStorage.setItem('userInfo', userID);
-            this.$confirm('用户ID作为登录凭证，请牢记')
+            this.$confirm(`用户ID作为登录凭证，请牢记！你的userID为：${this.form.userId}`)
               // 请求接口，弹窗提示
               .then(() => {
                 this.goBack();

@@ -1,17 +1,17 @@
 const rules = {
-  useRole: [{ required: true, message: '用户角色不能为空', trigger: 'change' }],
+  userRole: [{ required: true, message: '用户角色不能为空', trigger: 'change' }],
   useClass: [
     { required: true, message: '用户班级不能为空', trigger: 'change' }
   ],
-  useGender: [
+  userGender: [
     { required: true, message: '用户性别不能为空', trigger: 'change' }
   ],
-  useName: [{ required: true, message: '账号不能为空', trigger: 'change' }],
+  userName: [{ required: true, message: '账号不能为空', trigger: 'change' }],
   userId: [{ required: true, message: '账号不能为空', trigger: 'change' }],
   userPwd: [{ required: true, message: '密码不能为空', trigger: 'change' }],
   newPwd: [{ required: true, message: '密码不能为空', trigger: 'change' }],
 };
-const useRoleList = [
+const userRoleList = [
   {
     label: '学生',
     key: '4'
@@ -29,9 +29,9 @@ const useRoleList = [
     key: '1'
   }
 ];
-const useGenderList = ['男', '女'];
+const userGenderList = ['男', '女'];
 module.exports = {
   rules,
-  useRoleList,
-  useGenderList
+  userRoleList,
+  userGenderList
 };
