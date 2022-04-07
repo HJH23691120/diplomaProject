@@ -60,11 +60,15 @@
       >
       </el-table-column>
       <el-table-column
-        prop="userRole"
         label="用户角色"
         min-width="150"
         align="center"
       >
+        <template v-slot="scoped">
+          <div>
+            {{ userType[scoped.row.userRole] }}
+          </div>
+        </template>
       </el-table-column>
       <el-table-column label="用户手机号" min-width="150" align="center">
         <template v-slot="scoped">
@@ -139,6 +143,12 @@
 <script>
 import API from '@apis/userlist/index.js';
 import Dialog from './component/user_dialog.vue';
+const userType={
+  '1':'管理员',
+  '2':'企业导师',
+  '3':'校内导师',
+  '4':'学生',
+}
 export default {
   name: 'userList',
   components: {
@@ -146,6 +156,7 @@ export default {
   },
   data() {
     return {
+      userType,
       form: {},
       userInfo: {},
       pageNum: 1, // 当前页数

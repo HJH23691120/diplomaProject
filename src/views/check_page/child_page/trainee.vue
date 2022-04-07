@@ -36,7 +36,9 @@
         <div>{{ form.practicePlace }}</div>
       </el-form-item>
       <el-form-item label="证明材料：">
-        <div>{{ form.uploaadProve }}</div>
+        <el-button type="text" @click="download(form.uploaadProve)">
+          {{ form.uploaadProve }}
+        </el-button>
       </el-form-item>
       <el-form-item label="是否同意申请：">
         <el-radio-group v-model="form.agreeApply">
@@ -64,7 +66,7 @@ export default {
   computed: {
     tableInfo() {
       return this.$route.query.userInfo;
-    }
+    },
   },
   data() {
     return {
@@ -72,13 +74,13 @@ export default {
       options: [
         {
           value: '1',
-          label: '同意'
+          label: '同意',
         },
         {
           value: '0',
-          label: '打回'
-        }
-      ]
+          label: '打回',
+        },
+      ],
     };
   },
   created() {
@@ -88,9 +90,9 @@ export default {
     initData() {
       const tempInfo = this.$route.query.userInfo;
       const param = {
-        userId: tempInfo.userId
+        userId: tempInfo.userId,
       };
-      API.getPracticeApply(param).then(res => {
+      API.getPracticeApply(param).then((res) => {
         if (res.code === -1) {
           this.$message.error('未查询出实习申请');
           return;
@@ -104,9 +106,9 @@ export default {
     confirm() {
       const param = {
         ...this.form,
-        updateBy: sessionStorage.getItem('userId')
+        updateBy: sessionStorage.getItem('userId'),
       };
-      API.updatePracticeApply(param).then(res => {
+      API.updatePracticeApply(param).then((res) => {
         if (res.code === -1) {
           this.$message.error('审核实习申请失败');
           return;
@@ -114,8 +116,15 @@ export default {
         this.$message.success('审核成功');
         this.form = res.data;
       });
-    }
-  }
+    },
+    download(fileName) {
+      const tempInfoID = this.$route.query.userInfo.userId;
+    
+        window.open(`http://localhost:8080/download?userId=${tempInfoID}&fileName=${fileName}`,'_blank')
+     
+    },
+   
+  },
 };
 </script>
 <style lang="scss" scoped>

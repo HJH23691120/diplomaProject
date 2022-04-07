@@ -95,17 +95,21 @@
         ></el-input>
       </el-form-item>
       <el-form-item label="证明材料">
-        <el-upload
+       <div class="upload">
+          <el-upload
           action
           ref="upload"
           :auto-upload="false"
           :on-change="handleUpload"
+          :show-file-list="false"
         >
           <el-button type="primary" plain size="small" :loading="uploadLoading">
             <i class="nb-icon-plus"></i>
             上传文件
           </el-button>
         </el-upload>
+       <p class="file-list" v-if="form.uploaadProve"  @click="download(form.uploaadProve)">{{form.uploaadProve}}</p>
+       </div>
       </el-form-item>
       <el-form-item label="审核结果" v-if="form.agreeApply">
         {{ form.agreeApply === "1" ? "同意" : "驳回" }}
@@ -134,6 +138,7 @@
 
 <script>
 import API from '@apis/student_mange/index';
+import axios from 'axios';
 export default {
   name: 'internship',
   components: {},
@@ -237,36 +242,34 @@ export default {
     },
     handleUpload(file) {
       this.errMsg = '';
-      // handleUpload(file, fileList) {
-      // const reg = /\.xlsx$/;
-      // const fileName = file.name;
-      // if (!reg.test(fileName)) {
-      //   this.$alert('请上传正确的表格文件！', '提示', {
-      //     confirmButtonText: '确定',
-      //     type: 'warning'
-      //   });
-      //   return;
-      // }
       this.uploadLoading = true;
-      const reader = new FileReader();
-      reader.onload = () => {
-        const fileBuffer = reader.result;
-        API.upload({
-          userId: sessionStorage.getItem('userId'),
-          File: fileBuffer
-        })
-          .then(res => {
+      let fileValue = document.querySelector('.el-upload .el-upload__input')
+      let fd = new FormData()
+      fd.append('userId',sessionStorage.getItem('userId'));
+      fd.append('file', fileValue.files[0]);
+        const xhr = new XMLHttpRequest();
+        xhr.onload = () => {
+          console.log(xhr)
+          if(xhr.status === 200) {
+            console.log(xhr);
+            const res= JSON.parse(xhr.response);
             if (res.code === -1) {
               this.$message.error('上传失败');
+               this.uploadLoading=false
               return;
             }
             this.$message.success('上传成功');
-          })
-          .finally(() => {
-            this.uploadLoading = false;
-          });
-      };
-      reader.readAsArrayBuffer(file.raw);
+            this.form.uploaadProve=res.data
+            this.uploadLoading=false
+          } else {
+             this.$message.error('上传失败');
+              this.uploadLoading=false
+          }
+        }
+        xhr.open('POST', 'http://localhost:8080/upload');
+        xhr.setRequestHeader('XMLHttpRequest','XMLHttpRequest');
+        xhr.setRequestHeader('Authorization',sessionStorage.getItem('token'))
+        xhr.send(fd)
     },
     querySearch(query) {
       console.log(query);
@@ -290,7 +293,12 @@ export default {
     },
     changeEdit() {
       this.isDisabled = false;
-    }
+    },
+     download(fileName) {
+      const tempInfoID = sessionStorage.getItem('userId');
+        window.open(`http://localhost:8080/download?userId=${tempInfoID}&fileName=${fileName}`,'_blank')
+     
+    },
   }
 };
 </script>
@@ -320,6 +328,15 @@ export default {
     top: 23px;
     .el-button {
       float: right;
+    }
+  }
+  ::v-deep .is-ready{
+    width: 500px;
+  }
+  .upload{
+    .file-list{
+      cursor: pointer;
+      color: #409EFF;
     }
   }
 }

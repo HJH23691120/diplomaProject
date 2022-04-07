@@ -35,7 +35,7 @@ export const routeMaps = [
     hidden: false,
     meta: {
       title: '学生管理',
-      limits: ['1', '2', '3']
+      limits: [ '2', '3']
     },
     children: [
       {

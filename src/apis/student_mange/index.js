@@ -42,6 +42,12 @@ const updatePracticeApply = function(data) {
 const getFirmTutro = function(data) {
   return axios.post('/getFirmTutro', JSON.stringify(data));
 };
+const upload = function(data) {
+  return axios.post('/upload', data);
+};
+const download = function(data) {
+  return axios.get(`/download?userId=${data.userId}&fileName=${data.fileName}`);
+};
 export default {
   updateWeek,
   getWeek,
@@ -53,5 +59,7 @@ export default {
   getEvaluate,
   addWeek,
   updatePracticeApply,
-  getFirmTutro
+  getFirmTutro,
+  upload,
+  download
 };

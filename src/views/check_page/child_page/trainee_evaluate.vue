@@ -104,7 +104,7 @@ export default {
       })
         .then(res => {
           if (res.code === -1) {
-            this.$message.error('查询失败');
+            this.$message.error(res.msg);
             return;
           }
           this.form = res.data || {};

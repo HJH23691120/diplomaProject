@@ -72,10 +72,8 @@ export default {
   },
   created() {
     const tempInfo = JSON.parse(sessionStorage.getItem('userInfo') || '{}');
-    const tempArr = routeMaps.filter(item => {
-      console.log(item);
-      item.meta.limits.includes(tempInfo.userRole);
-    });
+    const tempArr = routeMaps.filter(item => 
+      item.meta.limits.includes(tempInfo.userRole));
     this.routeList = tempArr.length !== 0 ? tempArr : routeMaps;
     if (this.$route.name === 'homepage') {
       this.selectedIndex = '/';
