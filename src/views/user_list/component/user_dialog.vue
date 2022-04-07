@@ -5,6 +5,7 @@
       :visible.sync="visible"
       width="590px"
       @close="handleClose"
+      :loading="loading"
     >
       <el-form
         :model="form"
