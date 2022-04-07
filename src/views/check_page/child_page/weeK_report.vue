@@ -3,7 +3,7 @@
     <!-- 周记审核 -->
     <section class="section">
       <!-- 周记选择框-->
-      <div class="select">
+      <div class="select" v-loading="loading">
         <span>请选择第</span
         ><el-select
           v-model="practiceWeek"
@@ -47,6 +47,7 @@
         :title="'周记审核'"
         :isVisible.sync="visible"
         @confirm="confirm"
+        :loading="dialogLoading"
       />
     </section>
   </div>
@@ -65,7 +66,9 @@ export default {
       practiceWeek: 1,
       weekReport: '',
       weekReportAudit: '',
-      visible: false
+      visible: false,
+      loading: false,
+      dialogLoading: false,
     };
   },
   created() {
@@ -84,18 +87,23 @@ export default {
         userId: tempInfo.userId,
         practiceWeek: this.practiceWeek + ''
       };
-      API.getWeek(param).then(res => {
-        if (res.code === -1) {
-          this.$message.error(
-            `第${this.practiceWeek}周的周记为空，请联系学生添加`
-          );
-          this.weekReportAudit = '';
-          this.weekReport = '';
-          return;
-        }
-        this.weekReport = res.data.practiceWeekReport;
-        this.weekReportAudit = res.data.weekReportAudit;
-      });
+      this.loading = true;
+      API.getWeek(param)
+        .then(res => {
+          if (res.code === -1) {
+            this.$message.error(
+              `第${this.practiceWeek}周的周记为空，请联系学生添加`
+            );
+            this.weekReportAudit = '';
+            this.weekReport = '';
+            return;
+          }
+          this.weekReport = res.data.practiceWeekReport;
+          this.weekReportAudit = res.data.weekReportAudit;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     audit() {
       this.visible = true;
@@ -111,13 +119,18 @@ export default {
         updateBy: userInfo.userName,
         weekReportAudit: data
       };
-      API.updateWeek(param).then(res => {
-        if (res.code === -1) {
-          this.$message.error('提交失败');
-          return;
-        }
-        this.$message.success('审核成功');
-      });
+      this.dialogLoading = true;
+      API.updateWeek(param)
+        .then(res => {
+          if (res.code === -1) {
+            this.$message.error('提交失败');
+            return;
+          }
+          this.$message.success('审核成功');
+        })
+        .finally(() => {
+          this.dialogLoading = false;
+        });
     }
   }
 };

@@ -6,6 +6,7 @@
       ref="form"
       label-width="120px"
       :inline="false"
+      :loading="loading"
       size="normal"
     >
       <el-form-item label="学生名称：">
@@ -78,7 +79,8 @@ export default {
           value: '0',
           label: '打回'
         }
-      ]
+      ],
+      loading: false
     };
   },
   created() {
@@ -90,13 +92,18 @@ export default {
       const param = {
         userId: tempInfo.userId
       };
-      API.getPracticeApply(param).then(res => {
-        if (res.code === -1) {
-          this.$message.error('未查询出实习申请');
-          return;
-        }
-        this.form = res.data;
-      });
+      this.loading = true;
+      API.getPracticeApply(param)
+        .then(res => {
+          if (res.code === -1) {
+            this.$message.error('未查询出实习申请');
+            return;
+          }
+          this.form = res.data;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     cancel() {
       this.$router.go(-1);
@@ -106,14 +113,19 @@ export default {
         ...this.form,
         updateBy: sessionStorage.getItem('userId')
       };
-      API.updatePracticeApply(param).then(res => {
-        if (res.code === -1) {
-          this.$message.error('审核实习申请失败');
-          return;
-        }
-        this.$message.success('审核成功');
-        this.form = res.data;
-      });
+      this.loading = true;
+      API.updatePracticeApply(param)
+        .then(res => {
+          if (res.code === -1) {
+            this.$message.error('审核实习申请失败');
+            return;
+          }
+          this.$message.success('审核成功');
+          this.form = res.data;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 };
