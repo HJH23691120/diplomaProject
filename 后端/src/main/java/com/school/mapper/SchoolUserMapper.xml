@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.school.mapper.SchoolUserMapper" >
+  <resultMap id="BaseResultMap" type="com.school.pojo.SchoolUser" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="user_pwd" property="userPwd" jdbcType="VARCHAR" />
+    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+    <result column="user_gender" property="userGender" jdbcType="VARCHAR" />
+    <result column="user_class" property="userClass" jdbcType="VARCHAR" />
+    <result column="user_role" property="userRole" jdbcType="VARCHAR" />
+    <result column="user_tel" property="userTel" jdbcType="VARCHAR" />
+    <result column="creat_by" property="creatBy" jdbcType="VARCHAR" />
+    <result column="creat_date" property="creatDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from school_user
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.school.pojo.SchoolUser" >
+    insert into school_user (
+      id,
+    <if test="userId!=null and userId!=''">
+      user_id,
+    </if>
+    <if test="userPwd!=null and userPwd!=''">
+      user_pwd,
+    </if>
+    <if test="userName!=null and userName!=''">
+      user_name,
+    </if>
+    <if test="userGender!=null and userGender!=''">
+      user_gender,
+    </if>
+    <if test="userClass!=null and userClass!=''">
+      user_class,
+    </if>
+    <if test="userRole!=null and userRole!=''">
+      user_role,
+    </if>
+    <if test="userTel!=null and userTel!=''">
+      user_tel,
+    </if>
+    <if test="creatBy!=null and creatBy!=''">
+      creat_by,
+    </if>
+    <if test="creatDate!=null">
+      creat_date,
+    </if>
+    <if test="updateBy!=null and updateBy!=''">
+      update_by,
+    </if>
+      update_date
+      )
+    values (
+      #{id,jdbcType=VARCHAR},
+    <if test="userId!=null and userId!=''">
+      #{userId,jdbcType=VARCHAR},
+    </if>
+    <if test="userPwd!=null and userPwd!=''">
+      #{userPwd,jdbcType=VARCHAR},
+    </if>
+    <if test="userName!=null and userName!=''">
+      #{userName,jdbcType=VARCHAR},
+    </if>
+    <if test="userGender!=null and userGender!=''">
+      #{userGender,jdbcType=VARCHAR},
+    </if>
+    <if test="userClass!=null and userClass!=''">
+      #{userClass,jdbcType=VARCHAR},
+    </if>
+    <if test="userRole!=null and userRole!=''">
+      #{userRole,jdbcType=VARCHAR},
+    </if>
+    <if test="userTel!=null and userTel!=''">
+      #{userTel,jdbcType=VARCHAR},
+    </if>
+    <if test="creatBy!=null and creatBy!=''">
+      #{creatBy,jdbcType=VARCHAR},
+    </if>
+    <if test="creatDate!=null">
+      #{creatDate,jdbcType=TIMESTAMP},
+    </if>
+    <if test="updateBy!=null and updateBy!=''">
+      #{updateBy,jdbcType=VARCHAR},
+    </if>
+      #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.school.pojo.SchoolUser" >
+    update school_user
+    set
+    <if test="userId!=null and userId!=''">
+      user_id = #{userId,jdbcType=VARCHAR},
+    </if>
+    <if test="userPwd!=null and userPwd!=''">
+      user_pwd = #{userPwd,jdbcType=VARCHAR},
+    </if>
+    <if test="userName!=null and userName!=''">
+      user_name = #{userName,jdbcType=VARCHAR},
+    </if>
+    <if test="userGender!=null and userGender!=''">
+      user_gender = #{userGender,jdbcType=VARCHAR},
+    </if>
+    <if test="userClass!=null and userClass!=''">
+      user_class = #{userClass,jdbcType=VARCHAR},
+    </if>
+    <if test="userRole!=null and userRole!=''">
+      user_role = #{userRole,jdbcType=VARCHAR},
+    </if>
+    <if test="userTel!=null and userTel!=''">
+      user_tel = #{userTel,jdbcType=VARCHAR},
+    </if>
+    <if test="creatBy!=null and creatBy!=''">
+      creat_by = #{creatBy,jdbcType=VARCHAR},
+    </if>
+    <if test="creatDate!=null">
+      creat_date = #{creatDate,jdbcType=TIMESTAMP},
+    </if>
+    <if test="updateBy!=null and updateBy!=''">
+      update_by = #{updateBy,jdbcType=VARCHAR},
+    </if>
+    update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updatePwd">
+    update school_user
+    set user_pwd = #{newPwd,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, user_id, user_pwd, user_name, user_gender, user_class, user_role, user_tel, 
+    creat_by, creat_date, update_by, update_date
+    from school_user
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, user_id, user_pwd, user_name, user_gender, user_class, user_role, user_tel, 
+    creat_by, creat_date, update_by, update_date
+    from school_user where 1=1
+    <if test="userClass!=null and userClass!=''">
+      and user_class = #{userClass,jdbcType=VARCHAR}
+    </if>
+    <if test="userRole!=null and userRole!=''">
+      and user_role = #{userRole,jdbcType=VARCHAR}
+    </if>
+    <if test="userId!=null and userId!=''">
+      and user_id = #{userId,jdbcType=VARCHAR}
+    </if>
+    ORDER BY update_date desc
+  </select>
+  <select id="selectOne" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, user_id, user_pwd, user_name, user_gender, user_class, user_role, user_tel,
+    creat_by, creat_date, update_by, update_date
+    from school_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <select id="getFirmTutro" resultType="java.util.Map">
+    select user_id,user_name from school_user where user_name like CONCAT('%',#{userName},'%') and user_role='2'
+  </select>
+  <select id="selectOneByUsetId" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, user_id, user_pwd, user_name, user_gender, user_class, user_role, user_tel,
+    creat_by, creat_date, update_by, update_date
+    from school_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectListByFirmTutor" resultMap="BaseResultMap">
+    select id, user_id, user_pwd, user_name, user_gender, user_class, user_role, user_tel,
+    creat_by, creat_date, update_by, update_date
+     from school_user where user_id in (select user_table_id from school_practice_apply where firm_tutor=#{userName,jdbcType=VARCHAR})
+     and user_role = #{userRole,jdbcType=VARCHAR}
+  </select>
+</mapper>

@@ -1,0 +1,33 @@
+static List<MenuBo> toMenuBo(List<menu> menuList){
+	List<MenuBo> menuBoS=new ArrayList<>();
+	for(Menu menu:menuList){
+		//取出所有数据中的最终父级
+		if(StringUtils.isEmpty(menu.getParentId())){
+			MenuBo menuBo=new MenuBo();
+			menuBo.setId(menu.getId());
+			menuBo.setName(menu.getName());
+			//使用迭代的方式进行查询子集合
+			List<MenuBo> childList=this.iterationMenu(menu.getId(),menuList)
+			menuBo.setChildList(childList);
+			menuBoS.add(menuBo);
+		}
+	}
+	return menuBoS;
+}
+
+//使用迭代的方式进行查询，其中parentId--父级id，menuList---需要查询列表
+static List<MenuBo> iterationMenu(Long parentId,List<menu> menuList){
+	List<MenuBo> menuBoS=new ArrayList<>();
+	for(Menu menu:menuList){
+		if(ObjectUtils.equals(parentId,menu.getParentId())){
+			MenuBo menuBo=new MenuBo();
+			menuBo.menuBo.setId(menu.getId());
+			menuBo.setName(menu.getName());
+			//迭代查询剩余子集
+			List<MenuBo> childList=this.iterationMenu(menu.getId(), menuList);
+			menuBo.setChildList(childList);
+			menuBoS.add(menuBo);
+		}
+	}
+	return menuBoS;
+}

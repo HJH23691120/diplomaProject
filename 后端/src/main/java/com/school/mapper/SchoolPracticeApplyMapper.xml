@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.school.mapper.SchoolPracticeApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.school.pojo.SchoolPracticeApply" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="user_table_id" property="userTableId" jdbcType="VARCHAR" />
+    <result column="unit_name" property="unitName" jdbcType="VARCHAR" />
+    <result column="practice_job" property="practiceJob" jdbcType="VARCHAR" />
+    <result column="firm_contact" property="firmContact" jdbcType="VARCHAR" />
+    <result column="firm_tel" property="firmTel" jdbcType="VARCHAR" />
+    <result column="firm_tutor" property="firmTutor" jdbcType="VARCHAR" />
+    <result column="practice_treatment" property="practiceTreatment" jdbcType="VARCHAR" />
+    <result column="practice_time" property="practiceTime" jdbcType="TIMESTAMP" />
+    <result column="practice_place" property="practicePlace" jdbcType="VARCHAR" />
+    <result column="uploaad_prove" property="uploaadProve" jdbcType="VARCHAR" />
+    <result column="agree_apply" property="agreeApply" jdbcType="VARCHAR" />
+    <result column="creat_by" property="creatBy" jdbcType="VARCHAR" />
+    <result column="creat_date" property="creatDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from school_practice_apply
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.school.pojo.SchoolPracticeApply" >
+    insert into school_practice_apply (id, user_table_id, unit_name, practice_job,
+      firm_contact, firm_tel, firm_tutor, 
+      practice_treatment, practice_time, practice_place, 
+      uploaad_prove, creat_by, creat_date, agree_apply,
+      update_by, update_date)
+    values (#{id,jdbcType=VARCHAR}, #{userTableId,jdbcType=VARCHAR}, #{unitName,jdbcType=VARCHAR}, #{practiceJob,jdbcType=VARCHAR},
+      #{firmContact,jdbcType=VARCHAR}, #{firmTel,jdbcType=VARCHAR}, #{firmTutor,jdbcType=VARCHAR}, 
+      #{practiceTreatment,jdbcType=VARCHAR}, #{practiceTime,jdbcType=TIMESTAMP}, #{practicePlace,jdbcType=VARCHAR}, 
+      #{uploaadProve,jdbcType=VARCHAR}, #{creatBy,jdbcType=VARCHAR}, #{creatDate,jdbcType=TIMESTAMP}, #{agreeApply,jdbcType=VARCHAR},
+      #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.school.pojo.SchoolPracticeApply" >
+    update school_practice_apply
+    set
+    <if test="userTableId!=null and userTableId!=''">
+      user_table_id = #{userTableId,jdbcType=VARCHAR},
+    </if>
+    <if test="unitName!=null and unitName!=''">
+      unit_name = #{unitName,jdbcType=VARCHAR},
+    </if>
+    <if test="practiceJob!=null and practiceJob!=''">
+      practice_job = #{practiceJob,jdbcType=VARCHAR},
+    </if>
+    <if test="firmContact!=null and firmContact!=''">
+      firm_contact = #{firmContact,jdbcType=VARCHAR},
+    </if>
+    <if test="firmTel!=null and firmTel!=''">
+      firm_tel = #{firmTel,jdbcType=VARCHAR},
+    </if>
+    <if test="firmTutor!=null and firmTutor!=''">
+      firm_tutor = #{firmTutor,jdbcType=VARCHAR},
+    </if>
+    <if test="practiceTreatment!=null and practiceTreatment!=''">
+      practice_treatment = #{practiceTreatment,jdbcType=VARCHAR},
+    </if>
+    <if test="practiceTime!=null">
+      practice_time = #{practiceTime,jdbcType=TIMESTAMP},
+    </if>
+    <if test="practicePlace!=null and practicePlace!=''">
+      practice_place = #{practicePlace,jdbcType=VARCHAR},
+    </if>
+    <if test="uploaadProve!=null and uploaadProve!=''">
+      uploaad_prove = #{uploaadProve,jdbcType=VARCHAR},
+    </if>
+    <if test="agreeApply!=null and agreeApply!=''">
+      agree_apply = #{agreeApply,jdbcType=VARCHAR},
+    </if>
+    <if test="creatBy!=null and creatBy!=''">
+      creat_by = #{creatBy,jdbcType=VARCHAR},
+    </if>
+    <if test="creatDate!=null">
+      creat_date = #{creatDate,jdbcType=TIMESTAMP},
+    </if>
+    <if test="updateBy!=null and updateBy!=''">
+      update_by = #{updateBy,jdbcType=VARCHAR},
+    </if>
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, user_table_id, unit_name, practice_job, firm_contact, firm_tel, firm_tutor, 
+    practice_treatment, practice_time, practice_place, uploaad_prove, creat_by, creat_date, agree_apply,
+    update_by, update_date
+    from school_practice_apply
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, user_table_id, unit_name, practice_job, firm_contact, firm_tel, firm_tutor, 
+    practice_treatment, practice_time, practice_place, uploaad_prove, creat_by, creat_date, agree_apply,
+    update_by, update_date
+    from school_practice_apply
+  </select>
+  <select id="selectOne" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, user_table_id, unit_name, practice_job, firm_contact, firm_tel, firm_tutor,
+    practice_treatment, practice_time, practice_place, uploaad_prove, creat_by, creat_date,agree_apply,
+    update_by, update_date
+    from school_practice_apply
+    where user_table_id = #{userId,jdbcType=VARCHAR}
+  </select>
+</mapper>

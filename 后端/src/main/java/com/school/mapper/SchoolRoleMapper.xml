@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.school.mapper.SchoolRoleMapper" >
+  <resultMap id="BaseResultMap" type="com.school.pojo.SchoolRole" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="role_name" property="roleName" jdbcType="VARCHAR" />
+    <result column="role_level" property="roleLevel" jdbcType="VARCHAR" />
+    <result column="creat_by" property="creatBy" jdbcType="VARCHAR" />
+    <result column="creat_date" property="creatDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from school_role
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.school.pojo.SchoolRole" >
+    insert into school_role (id, role_name, role_level, creat_by,
+      creat_date, update_by, update_date
+      )
+    values (#{id,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{roleLevel,jdbcType=VARCHAR}, #{creatBy,jdbcType=VARCHAR},
+      #{creatDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.school.pojo.SchoolRole" >
+    update school_role
+    set
+    <if test="roleName!=null and roleName!=''">
+      role_name = #{roleName,jdbcType=VARCHAR},
+    </if>
+    <if test="roleLevel!=null and roleLevel!=''">
+      role_level = #{roleLevel,jdbcType=VARCHAR},
+    </if>
+    <if test="creatBy!=null and creatBy!=''">
+      creat_by = #{creatBy,jdbcType=VARCHAR},
+    </if>
+    <if test="creatDate!=null">
+      creat_date = #{creatDate,jdbcType=TIMESTAMP},
+    </if>
+    <if test="updateBy!=null and updateBy!=''">
+      update_by = #{updateBy,jdbcType=VARCHAR},
+    </if>
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select id, role_name, role_level, creat_by, creat_date, update_by, update_date
+    from school_role
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, role_name, role_level, creat_by, creat_date, update_by, update_date
+    from school_role
+  </select>
+</mapper>
